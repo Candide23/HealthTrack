@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findAllUser(Long userId, UserDto userDto) {
+    public List<UserDto> findAllUser() {
 
         List<User> users = userRepository.findAll();
 

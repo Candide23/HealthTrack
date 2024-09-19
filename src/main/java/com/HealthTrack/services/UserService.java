@@ -8,5 +8,5 @@ public interface UserService {
 
     UserDto createUser(UserDto userDto);
     UserDto findUserById(Long userId);
-    List<UserDto> findAllUser(Long userId, UserDto userDto);
+    List<UserDto> findAllUser();
 }
