@@ -20,4 +20,12 @@ public class UserServiceImpl implements UserService {
         User saveUser = userRepository.save(newUser);
         return UserMapper.mapToUserTdo(saveUser);
     }
+
+    @Override
+    public UserDto findUserById(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return UserMapper.mapToUserTdo(user);
+    }
 }
