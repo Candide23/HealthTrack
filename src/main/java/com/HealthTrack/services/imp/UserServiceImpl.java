@@ -57,5 +57,16 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public void deleteUser(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserMapper.mapToUserTdo(user);
+
+
+
+    }
+
 
 }
