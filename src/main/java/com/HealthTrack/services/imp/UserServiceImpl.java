@@ -40,8 +40,19 @@ public class UserServiceImpl implements UserService {
 
         return users.stream().map(user -> UserMapper.mapToUserTdo(user)).collect(Collectors.toList());
 
+    }
 
+    @Override
+    public UserDto updateUser(Long userId, UserDto userDto) {
 
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+       user.setUsername(userDto.getUsername());
+       user.setPassword(userDto.getPassword());
+
+       User updatableUser = userRepository.save(user);
+
+       return UserMapper.mapToUserTdo(updatableUser);
 
 
     }
