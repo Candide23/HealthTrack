@@ -9,8 +9,8 @@ public interface UserService {
     UserDto createUser(UserDto userDto);
     UserDto findUserById(Long userId);
     List<UserDto> findAllUser();
-
     UserDto updateUser(Long userId, UserDto userDto);
+
 
 
 }

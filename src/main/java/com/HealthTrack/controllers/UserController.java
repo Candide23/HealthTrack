@@ -3,8 +3,6 @@ package com.HealthTrack.controllers;
 import com.HealthTrack.dtos.UserDto;
 import com.HealthTrack.services.UserService;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +36,19 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDto>> findAllUsers(){
 
-        return ResponseEntity.ok(userService.findAllUser());
+        List<UserDto> userDto = userService.findAllUser();
+
+        return ResponseEntity.ok(userDto);
 
 
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<UserDto> updatedUsers( @PathVariable("id") Long userId, @RequestBody UserDto userDto){
+
+        UserDto updatedUser = userService.updateUser(userId, userDto);
+
+        return ResponseEntity.ok(updatedUser);
     }
 
 }
