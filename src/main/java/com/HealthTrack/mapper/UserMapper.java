@@ -5,20 +5,20 @@ import com.HealthTrack.models.User;
 
 public class UserMapper {
 
-    public static UserDto mapToUserDto(UserDto userDto){
+    public static UserDto mapToUserTdo(User user){
 
         return new UserDto (
-                userDto.getId(),
-                userDto.getUsername(),
-                userDto.getPassword()
-        );
-    }
-
-    public static User mapToUser(User user){
-        return new User(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword()
+        );
+    }
+
+    public static User mapToUse(UserDto userDto){
+        return new User(
+                userDto.getId(),
+                userDto.getUsername(),
+                userDto.getPassword()
         );
     }
 }
