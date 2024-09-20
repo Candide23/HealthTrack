@@ -21,4 +21,12 @@ public class HealthMetricServiceImpl implements HealthMetricService {
         HealthMetric saveHealthMetric = healthMetricRepository.save(healthMetric);
         return HealthMetricMapper.mapToHealthMetricDto(saveHealthMetric);
     }
+
+    @Override
+    public HealthMetricDto getHealthMetricById(Long healthMetricId) {
+
+        HealthMetric healthMetric = healthMetricRepository.findById(healthMetricId)
+                .orElseThrow(() -> new RuntimeException("healthMetricId not found"));
+        return HealthMetricMapper.mapToHealthMetricDto(healthMetric);
+    }
 }

@@ -6,5 +6,7 @@ public interface HealthMetricService {
 
     HealthMetricDto createHealthMetric(HealthMetricDto healthMetricDto);
 
+    HealthMetricDto getHealthMetricById(Long healthMetricId);
+
 
 }
