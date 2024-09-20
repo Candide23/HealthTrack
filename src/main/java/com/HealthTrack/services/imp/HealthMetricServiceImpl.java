@@ -8,6 +8,9 @@ import com.HealthTrack.services.HealthMetricService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class HealthMetricServiceImpl implements HealthMetricService {
@@ -28,5 +31,14 @@ public class HealthMetricServiceImpl implements HealthMetricService {
         HealthMetric healthMetric = healthMetricRepository.findById(healthMetricId)
                 .orElseThrow(() -> new RuntimeException("healthMetricId not found"));
         return HealthMetricMapper.mapToHealthMetricDto(healthMetric);
+    }
+
+    @Override
+    public List<HealthMetricDto> getAllHealthMetric() {
+
+        List<HealthMetric> healthMetrics = healthMetricRepository.findAll();
+        return healthMetrics.stream()
+                .map((healthMetric -> HealthMetricMapper.mapToHealthMetricDto(healthMetric)))
+                .collect(Collectors.toList());
     }
 }

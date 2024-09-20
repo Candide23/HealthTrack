@@ -6,10 +6,9 @@ import com.HealthTrack.services.HealthMetricService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -25,5 +24,17 @@ public class HealthMetricController {
 
         return new ResponseEntity<>(createdHealthMetrics, HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HealthMetricDto> getMetricById(@PathVariable("id") Long healthMetricId) {
+        HealthMetricDto metric = healthMetricService.getHealthMetricById(healthMetricId);
+        return ResponseEntity.ok(metric);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<HealthMetricDto>> getAllMetrics() {
+        List<HealthMetricDto> metrics = healthMetricService.getAllHealthMetric();
+        return ResponseEntity.ok(metrics);
     }
 }
