@@ -8,8 +8,10 @@ public interface HealthMetricService {
 
     HealthMetricDto createHealthMetric(HealthMetricDto healthMetricDto);
     HealthMetricDto getHealthMetricById(Long healthMetricId);
-
     List<HealthMetricDto> getAllHealthMetric();
+    HealthMetricDto updateHealthMetric(Long healthMetricId, HealthMetricDto healthMetricDto);
+
+    void deleteHealthMetric(Long healthMetricId);
 
 
 }

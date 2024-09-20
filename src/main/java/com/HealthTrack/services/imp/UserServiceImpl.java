@@ -62,7 +62,9 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        UserMapper.mapToUserTdo(user);
+        userRepository.deleteById(userId);
+
+
 
 
 

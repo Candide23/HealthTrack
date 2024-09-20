@@ -41,4 +41,27 @@ public class HealthMetricServiceImpl implements HealthMetricService {
                 .map((healthMetric -> HealthMetricMapper.mapToHealthMetricDto(healthMetric)))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public HealthMetricDto updateHealthMetric(Long healthMetricId, HealthMetricDto healthMetricDto) {
+
+        HealthMetric healthMetric = healthMetricRepository.findById(healthMetricId).orElseThrow(() -> new RuntimeException("healthMetricId not found"));
+
+        healthMetric.setMetricType(healthMetric.getMetricType());
+        healthMetric.setValue(healthMetricDto.getValue());
+        healthMetric.setTimestamp(healthMetricDto.getTimestamp());
+
+        HealthMetric updatedHealthMetric = healthMetricRepository.save(healthMetric);
+        return HealthMetricMapper.mapToHealthMetricDto(updatedHealthMetric);
+    }
+
+    @Override
+    public void deleteHealthMetric(Long healthMetricId) {
+
+        HealthMetric healthMetric = healthMetricRepository.findById(healthMetricId)
+                .orElseThrow(() -> new RuntimeException("healthMetricId not found"));
+
+        healthMetricRepository.deleteById(healthMetricId);
+
+    }
 }

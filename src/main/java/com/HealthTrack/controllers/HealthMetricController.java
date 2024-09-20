@@ -27,14 +27,29 @@ public class HealthMetricController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HealthMetricDto> getMetricById(@PathVariable("id") Long healthMetricId) {
+    public ResponseEntity<HealthMetricDto> getHealthMetricsById(@PathVariable("id") Long healthMetricId) {
         HealthMetricDto metric = healthMetricService.getHealthMetricById(healthMetricId);
         return ResponseEntity.ok(metric);
     }
 
     @GetMapping
-    public ResponseEntity<List<HealthMetricDto>> getAllMetrics() {
+    public ResponseEntity<List<HealthMetricDto>> getAllHealthMetrics() {
         List<HealthMetricDto> metrics = healthMetricService.getAllHealthMetric();
         return ResponseEntity.ok(metrics);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<HealthMetricDto> updateHealthMetrics(@PathVariable("id") Long healthMetricId, @RequestBody HealthMetricDto healthMetricDto) {
+        HealthMetricDto updatedHealthMetric = healthMetricService.updateHealthMetric(healthMetricId, healthMetricDto);
+        return ResponseEntity.ok(updatedHealthMetric);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletedHealthMetrics(@PathVariable("id") Long healthMetricId){
+
+         healthMetricService.deleteHealthMetric(healthMetricId);
+
+        return  ResponseEntity.ok("Deleted Successful");
     }
 }
