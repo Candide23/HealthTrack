@@ -24,13 +24,13 @@ public class UserMapper {
     }
 
     public static User mapToUser(UserDto userDto){
+
         User user = new User();
         user.setId(userDto.getId());
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());  // Ensure password is hashed in the service layer
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
-        // Symptoms, HealthMetrics, and Appointments are not mapped here, as they are handled separately
         return user;
+
     }
 }

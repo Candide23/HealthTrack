@@ -16,13 +16,13 @@ public class HealthMetric {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "metric_type", nullable = false)
+    @Column(name = "metric_type")
     private String metricType;
 
-    @Column(nullable = false)
+    @Column
     private Double value;
 
-    @Column(name = "timestamp", nullable = false)
+    @Column(name = "timestamp")
     private LocalDateTime timestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
