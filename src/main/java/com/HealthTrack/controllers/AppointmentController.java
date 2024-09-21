@@ -29,20 +29,21 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentDto> getAppointmentById(@PathVariable Long appointmentId) {
+    public ResponseEntity<AppointmentDto> getAppointmentById(@PathVariable("id") Long appointmentId) {
         AppointmentDto appointment = appointmentService.findAppointmentById(appointmentId);
         return new ResponseEntity<>(appointment, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppointmentDto> updateAppointment(@PathVariable Long appointmentId, @RequestBody AppointmentDto appointmentDto) {
+    public ResponseEntity<AppointmentDto> updateAppointment(@PathVariable("id") Long appointmentId, @RequestBody AppointmentDto appointmentDto) {
         AppointmentDto updatedAppointment = appointmentService.updateAppointmentById(appointmentId, appointmentDto);
         return new ResponseEntity<>(updatedAppointment, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAppointment(@PathVariable ("id") Long appointmentId) {
+    public ResponseEntity<String> deleteAppointment(@PathVariable ("id") Long appointmentId) {
         appointmentService.deleteAppointment(appointmentId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return  ResponseEntity.ok("Appointment deleted Successfully");
+
     }
 }

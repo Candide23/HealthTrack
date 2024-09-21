@@ -19,16 +19,16 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String doctorName;
 
-    @Column
+    @Column(nullable = false)
     private String location;
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime appointmentDate;
 
-    @Column
+    @Column(nullable = false)
     private String reasonForVisit;
 
     @ManyToOne(fetch = FetchType.LAZY)

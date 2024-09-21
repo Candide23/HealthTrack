@@ -19,13 +19,13 @@ public class Symptom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String symptomType;  // e.g., headache, fatigue
 
-    @Column
+    @Column(nullable = false)
     private int severity;  // 1 to 10
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)

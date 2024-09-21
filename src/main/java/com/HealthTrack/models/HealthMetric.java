@@ -19,10 +19,10 @@ public class HealthMetric {
     @Column(name = "metric_type")
     private String metricType;
 
-    @Column
+    @Column(nullable = false)
     private Double value;
 
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -41,8 +41,8 @@ public class SymptomController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<SymptomDto> updateSymptom(@PathVariable Long id, @RequestBody SymptomDto symptomDto) {
-        SymptomDto updatedSymptom = symptomService.updateSymptom(id, symptomDto);
+    public ResponseEntity<SymptomDto> updateSymptom(@PathVariable("id") Long idSymptom, @RequestBody SymptomDto symptomDto) {
+        SymptomDto updatedSymptom = symptomService.updateSymptom(idSymptom, symptomDto);
         return ResponseEntity.ok(updatedSymptom);
     }
 }
