@@ -25,11 +25,20 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String phoneNumber;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Symptom> symptoms;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<HealthMetric> healthMetrics;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments;  // List of appointments managed by the user
 
 
 
