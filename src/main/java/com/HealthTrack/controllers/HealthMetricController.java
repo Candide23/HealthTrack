@@ -50,6 +50,6 @@ public class HealthMetricController {
 
          healthMetricService.deleteHealthMetric(healthMetricId);
 
-        return  ResponseEntity.ok("Deleted Successful");
+        return  ResponseEntity.ok("Deleted Metric Successful");
     }
 }

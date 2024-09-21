@@ -1,100 +1,128 @@
 package com.HealthTrack.controllers;
 
+
 import com.HealthTrack.dtos.UserDto;
 import com.HealthTrack.services.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+@SpringBootTest
 public class UserControllerTest {
 
-    @InjectMocks
-    private  UserController userController;
+   private MockMvc mockMvc;
 
-    @Mock
-    private UserService userService;
+   @Mock
+   private UserService userService;
 
-    private MockMvc mockMvc;
+   @InjectMocks
+   private UserController userController;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-    }
-    @Test
-    void testCreateUser() throws Exception {
-        // Create a user DTO object
-        UserDto userDto = new UserDto(null, "Candide", "cham");
+   @Test
+    public void testCreateUser() throws Exception{
 
-        // Mock the behavior of the userService.createUser() method
-        when(userService.createUser(any(UserDto.class)))
-                .thenReturn(new UserDto(1L, "Candide", "cham"));
+       UserDto userDto = new UserDto(null, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
+       UserDto createdUserDto = new UserDto(null, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
 
-        // Convert the UserDto object to JSON
-        ObjectMapper objectMapper = new ObjectMapper();
-        String userDtoJson = objectMapper.writeValueAsString(userDto);
+       when(userService.createUser(any(UserDto.class))).thenReturn(createdUserDto);
 
-        // Perform the POST request and check the response
-        mockMvc.perform(post("/api/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(userDtoJson))
-                .andExpect(status().isCreated()) // Check that the status is 201 Created
-                .andExpect(jsonPath("$.username").value("Candide")) // Check that the username is correct
-                .andExpect(jsonPath("$.id").value(1L)); // Check that the ID is as expected
-    }
+       mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 
-    @Test
-    void testGetAllUsers() throws Exception {
-        List<UserDto> users = Arrays.asList(
-                new UserDto(1L, "Candide", "cham"),
-                new UserDto(2L, "john", "john23")
-        );
-        when(userService.findAllUser()).thenReturn(users);
+       mockMvc.perform(post("/api/users")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content("{\"username\":\"cham\",\"password\":\"mbk\",\"email\":\"cham@email.com\",\"phoneNumber\":\"123-456-7890\"}"))
+               .andExpect(status().isCreated())
+               .andExpect(jsonPath("$.username").value("cham"))
+               .andExpect(jsonPath("$.email").value("cham@email.com"));
 
-        mockMvc.perform(get("/api/users"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].username").value("Candide"))
-                .andExpect(jsonPath("$[1].username").value("john"));
-    }
 
-    @Test
-    void testUpdateUser() throws Exception {
-        UserDto userDto = new UserDto(1L, "Candide", "newcham");
-        when(userService.updateUser(eq(1L), any(UserDto.class))).thenReturn(userDto);
 
-        mockMvc.perform(put("/api/users/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\": \"Candide\", \"password\": \"newcham\"}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("Candide"))
-                .andExpect(jsonPath("$.password").value("newcham"));
-    }
+   }
 
-    @Test
-    void testDeleteUser() throws Exception {
-        doNothing().when(userService).deleteUser(1L);
+   @Test
+   public void testFindUserById() throws Exception{
 
-        // Perform the DELETE request to delete user with id 1
-        mockMvc.perform(delete("/api/users/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("User deleted Successfully"));
-    }
+      UserDto userDto = new UserDto(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
+
+      when(userService.findUserById(1L)).thenReturn(userDto);
+
+      mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+
+
+      mockMvc.perform(get("/api/users/1"))
+              .andExpect(status().isOk())
+              .andExpect(jsonPath("$.username").value("cham"))
+              .andExpect(jsonPath("$.email").value("cham@email.com"));
+
+   }
+
+   @Test
+   public void testFindAllUsers() throws Exception{
+
+      List<UserDto> users = Arrays.asList(
+              new UserDto(1L, "cham", "mbk", "cham@email.com", "123-456-7890", null, null, null),
+              new UserDto(2L, "jane", "password", "jane@email.com", "123-555-7890", null, null, null)
+      );
+
+      when(userService.findAllUser()).thenReturn(users);
+
+      mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+      mockMvc.perform(get("/api/users"))
+              .andExpect(status().isOk())
+              .andExpect(jsonPath("$[0].username").value("cham"))
+              .andExpect(jsonPath("$[1].username").value("jane"));
+
+   }
+
+   @Test
+   public void testUpdatedUser() throws Exception{
+      UserDto userDto = new UserDto(1L, "chama","mbka","chama@email.com","987-654-3210",null, null,null);
+
+      when(userService.updateUser(eq(1L), any(UserDto.class))).thenReturn(userDto);
+
+      mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+
+
+      mockMvc.perform(put("/api/users/1")
+                      .contentType(MediaType.APPLICATION_JSON)
+                      .content("{\"username\":\"chama\",\"password\":\"mbka\",\"email\":\"chama@email.com\",\"phoneNumber\":\"987-654-3210\"}"))
+              .andExpect(status().isOk())
+              .andExpect(jsonPath("$.username").value("chama"))
+              .andExpect(jsonPath("$.email").value("chama@email.com"));
+
+
+
+
+   }
+
+   @Test
+   public void testDeletedUser() throws Exception{
+
+     mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+
+     mockMvc.perform(delete("/api/users/1"))
+             .andExpect(status().isOk())
+                     .andExpect(MockMvcResultMatchers.content().string("User deleted Successfully"));
+             verify(userService, times(1)).deleteUser(1L);
+
+   }
+
+
+
+
 }

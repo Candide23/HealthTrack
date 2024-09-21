@@ -45,4 +45,12 @@ public class SymptomController {
         SymptomDto updatedSymptom = symptomService.updateSymptom(idSymptom, symptomDto);
         return ResponseEntity.ok(updatedSymptom);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletedHealthMetrics(@PathVariable("id") Long idSymptom){
+
+        symptomService.deleteSymptom(idSymptom);
+
+        return  ResponseEntity.ok("Deleted Symptom Successful");
+    }
 }
