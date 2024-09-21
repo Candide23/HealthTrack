@@ -1,27 +1,39 @@
 package com.HealthTrack.mapper;
 
 import com.HealthTrack.dtos.UserDto;
+import com.HealthTrack.models.Appointment;
+import com.HealthTrack.models.HealthMetric;
+import com.HealthTrack.models.Symptom;
 import com.HealthTrack.models.User;
+import com.HealthTrack.repositories.AppointmentRepository;
+import com.HealthTrack.repositories.HealthMetricRepository;
+import com.HealthTrack.repositories.SymptomRepository;
+import com.HealthTrack.services.AppointmentService;
 
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+
 
 public class UserMapper {
 
-    public static UserDto mapToUserTdo(User user){
 
-        return new UserDto (
+
+    // Map User entity to UserDto
+    public static UserDto mapToUserTdo(User user) {
+        return new UserDto(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
                 user.getEmail(),
                 user.getPhoneNumber(),
-
-                // Map related entity IDs
-                user.getSymptoms().stream().map(symptom -> symptom.getId()).collect(Collectors.toList()),
-                user.getHealthMetrics().stream().map(healthMetric -> healthMetric.getId()).collect(Collectors.toList()),
-                user.getAppointments().stream().map(appointment -> appointment.getId()).collect(Collectors.toList())
+                user.getSymptoms(),  // Directly set List<Symptom>
+                user.getHealthMetrics(),  // Directly set List<HealthMetric>
+                user.getAppointments()
         );
     }
+
 
     public static User mapToUser(UserDto userDto){
 
@@ -31,6 +43,9 @@ public class UserMapper {
         user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setSymptoms(userDto.getSymptoms());  // Directly set List<Symptom>
+        user.setHealthMetrics(userDto.getHealthMetrics());  // Directly set List<HealthMetric>
+        user.setAppointments(userDto.getAppointments());  // Directly set List<Appointment>
         return user;
 
     }

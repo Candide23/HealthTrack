@@ -1,5 +1,8 @@
 package com.HealthTrack.dtos;
 
+import com.HealthTrack.models.Appointment;
+import com.HealthTrack.models.HealthMetric;
+import com.HealthTrack.models.Symptom;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +22,7 @@ public class UserDto {
     private String email;
     private String phoneNumber;
 
-    private List<Long> symptomIds;
-    private List<Long> healthMetricIds;
-    private List<Long> appointmentIds;
+    private List<Symptom> symptoms;
+    private List<HealthMetric> healthMetrics;
+    private List<Appointment> appointments;
 }
