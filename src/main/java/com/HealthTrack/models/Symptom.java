@@ -30,4 +30,8 @@ public class Symptom {
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;  // The user who logged the sympto
 }

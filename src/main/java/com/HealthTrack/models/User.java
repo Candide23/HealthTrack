@@ -25,6 +25,16 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Symptom> symptoms;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<HealthMetric> healthMetrics;
+
+
+
+
+
 
 
 }

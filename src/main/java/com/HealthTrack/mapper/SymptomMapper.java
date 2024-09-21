@@ -2,6 +2,7 @@ package com.HealthTrack.mapper;
 
 import com.HealthTrack.dtos.SymptomDto;
 import com.HealthTrack.models.Symptom;
+import com.HealthTrack.models.User;
 
 public class SymptomMapper {
 
@@ -11,17 +12,21 @@ public class SymptomMapper {
                 symptom.getSymptomType(),
                 symptom.getSeverity(),
                 symptom.getDescription(),
-                symptom.getTimestamp());
+                symptom.getTimestamp(),
+                symptom.getUser().getId()// Get user ID from the entity
+        );
     }
 
-    public static Symptom mapToSymptom(SymptomDto symptomDto){
+    public static Symptom mapToSymptom(SymptomDto symptomDto, User user){
 
         return new Symptom(
                 symptomDto.getId(),
                 symptomDto.getSymptomType(),
                 symptomDto.getSeverity(),
                 symptomDto.getDescription(),
-                symptomDto.getTimestamp()
+                symptomDto.getTimestamp(),
+                user   // User entity passed from the service layer
+
 
         );
 

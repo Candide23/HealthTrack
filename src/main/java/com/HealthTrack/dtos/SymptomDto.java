@@ -22,4 +22,6 @@ public class SymptomDto {
     private String description;
 
     private LocalDateTime timestamp;
+
+    private Long userId;
 }

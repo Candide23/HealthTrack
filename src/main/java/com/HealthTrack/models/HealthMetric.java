@@ -16,11 +16,16 @@ public class HealthMetric {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "metric_type")
+    @Column(name = "metric_type", nullable = false)
     private String metricType;
 
+    @Column(nullable = false)
     private Double value;
 
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;  // The user who logged the health metric
 }
