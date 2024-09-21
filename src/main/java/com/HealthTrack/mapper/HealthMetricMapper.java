@@ -2,6 +2,7 @@ package com.HealthTrack.mapper;
 
 import com.HealthTrack.dtos.HealthMetricDto;
 import com.HealthTrack.models.HealthMetric;
+import com.HealthTrack.models.User;
 
 public class HealthMetricMapper {
 
@@ -11,18 +12,20 @@ public class HealthMetricMapper {
                 healthMetric.getId(),
                 healthMetric.getMetricType(),
                 healthMetric.getValue(),
-                healthMetric.getTimestamp()
+                healthMetric.getTimestamp(),
+                healthMetric.getUser().getId()
 
         );
     }
 
-    public static HealthMetric mapToHealthMetric(HealthMetricDto healthMetricDto){
+    public static HealthMetric mapToHealthMetric(HealthMetricDto healthMetricDto, User user){
 
         return new HealthMetric(
                 healthMetricDto.getId(),
                 healthMetricDto.getMetricType(),
                 healthMetricDto.getValue(),
-                healthMetricDto.getTimestamp()
+                healthMetricDto.getTimestamp(),
+                user // User entity passed from the service layer
         );
 
     }

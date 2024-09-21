@@ -3,7 +3,9 @@ package com.HealthTrack.services.imp;
 import com.HealthTrack.dtos.HealthMetricDto;
 import com.HealthTrack.mapper.HealthMetricMapper;
 import com.HealthTrack.models.HealthMetric;
+import com.HealthTrack.models.User;
 import com.HealthTrack.repositories.HealthMetricRepository;
+import com.HealthTrack.repositories.UserRepository;
 import com.HealthTrack.services.HealthMetricService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,14 @@ public class HealthMetricServiceImpl implements HealthMetricService {
 
     private HealthMetricRepository healthMetricRepository;
 
+    private UserRepository userRepository;
+
     @Override
     public HealthMetricDto createHealthMetric(HealthMetricDto healthMetricDto) {
+        User user = userRepository.findById(healthMetricDto.getUserId()).orElseThrow();
 
-        HealthMetric healthMetric = HealthMetricMapper.mapToHealthMetric(healthMetricDto);
+
+        HealthMetric healthMetric = HealthMetricMapper.mapToHealthMetric(healthMetricDto, user);
         HealthMetric saveHealthMetric = healthMetricRepository.save(healthMetric);
         return HealthMetricMapper.mapToHealthMetricDto(saveHealthMetric);
     }

@@ -18,4 +18,5 @@ public class HealthMetricDto {
     private String metricType;
     private Double value;
     private LocalDateTime timestamp;
+    private Long userId;        // User ID of the logged user
 }
