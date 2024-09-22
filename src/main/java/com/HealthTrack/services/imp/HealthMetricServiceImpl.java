@@ -53,7 +53,8 @@ public class HealthMetricServiceImpl implements HealthMetricService {
 
         HealthMetric healthMetric = healthMetricRepository.findById(healthMetricId).orElseThrow(() -> new RuntimeException("healthMetricId not found"));
 
-        healthMetric.setMetricType(healthMetric.getMetricType());
+        //healthMetric.setMetricType(healthMetric.getMetricType()); error I made
+        healthMetric.setMetricType(healthMetricDto.getMetricType());
         healthMetric.setValue(healthMetricDto.getValue());
         healthMetric.setTimestamp(healthMetricDto.getTimestamp());
 

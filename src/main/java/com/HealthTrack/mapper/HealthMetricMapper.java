@@ -13,7 +13,7 @@ public class HealthMetricMapper {
                 healthMetric.getMetricType(),
                 healthMetric.getValue(),
                 healthMetric.getTimestamp(),
-                healthMetric.getUser().getId()
+                healthMetric.getUser() != null ? healthMetric.getUser().getId() : null  // Check for null user Really important
 
         );
     }
