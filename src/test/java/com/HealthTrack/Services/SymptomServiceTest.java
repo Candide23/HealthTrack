@@ -78,6 +78,6 @@ public class SymptomServiceTest {
 
         symptomService.deleteSymptom(1L);
 
-        verify(symptomRepository, times(1)).delete(symptom);
+        verify(symptomRepository, times(1)).deleteById(1L);
     }
 }
