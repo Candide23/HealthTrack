@@ -15,6 +15,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest
 public class HealthMetricControllerTest {
@@ -54,6 +56,23 @@ public class HealthMetricControllerTest {
         mockMvc.perform(get("/api/healthMetric/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.metricType").value("Weight"));
+    }
+
+    @Test
+    public void testFindAllHealthMetrics() throws Exception {
+        List<HealthMetricDto> metrics = Arrays.asList(
+                new HealthMetricDto(1L, "Weight", 75.5, LocalDateTime.now(), 1L),
+                new HealthMetricDto(2L, "Blood Pressure", 120.8, LocalDateTime.now(), 1L)
+        );
+
+        when(healthMetricService.findAllHealthMetric()).thenReturn(metrics);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(healthMetricController).build();
+
+        mockMvc.perform(get("/api/health-metrics"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].metricType").value("Weight"))
+                .andExpect(jsonPath("$[1].metricType").value("Blood Pressure"));
     }
 
     @Test
