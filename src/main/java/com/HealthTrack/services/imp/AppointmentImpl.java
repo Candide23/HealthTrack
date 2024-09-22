@@ -47,7 +47,7 @@ public class AppointmentImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentDto updateAppointmentById(Long appointmentId, AppointmentDto appointmentDto) {
+    public AppointmentDto updateAppointment(Long appointmentId, AppointmentDto appointmentDto) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
         appointment.setDoctorName(appointmentDto.getDoctorName());

@@ -15,7 +15,7 @@ public class AppointmentMapper {
                 appointment.getLocation(),
                 appointment.getAppointmentDate(),
                 appointment.getReasonForVisit(),
-                appointment.getUser().getId()  // Get the user ID from the associated user
+                appointment.getUser() != null ? appointment.getUser().getId() : null  // Check for null user Really important
         );
     }
 
