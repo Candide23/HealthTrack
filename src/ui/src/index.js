@@ -1,14 +1,13 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './index.css';
 import App from './App';
-import { BrowserRouter as Router } from 'react-router-dom';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root')); // This is the correct syntax for React 18
 root.render(
-  <Router>
+  <React.StrictMode>
     <App />
-  </Router>
+  </React.StrictMode>
 );
+
 

@@ -1,31 +1,39 @@
 import React, { useState } from 'react';
-import { login } from '../../services/api';
 
-const Login = ({ history }) => {
+const Login = () => {
+  console.log('Rendering Login Component');  // Add this log to check if the component is rendered
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await login(username, password);
-      history.push('/dashboard');
-    } catch (error) {
-      console.error('Login failed', error);
-    }
+    console.log('Login submitted with:', username, password);
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Username</label>
-          <input type="text" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <input
+            type="text"
+            className="form-control"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
         <div className="form-group">
           <label>Password</label>
-          <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="password"
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
         <button type="submit" className="btn btn-primary">Login</button>
       </form>
