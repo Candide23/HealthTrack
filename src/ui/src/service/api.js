@@ -1,43 +1,25 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'http://localhost:8080/api';  // Adjust this to your backend URL
 
-// For Logging In
-export const login = (credentials) => {
-  return axios.post(`${API_URL}/login`, credentials);
-};
+const api = axios.create({
+  baseURL: API_URL,
+});
 
-// For Registering
-export const register = (userData) => {
-  return axios.post(`${API_URL}/users`, userData);
-};
+// Auth-related functions
+export const login = (username, password) => api.post('/auth/login', { username, password });
+export const register = (username, password, email, phoneNumber) => api.post('/auth/register', { username, password, email, phoneNumber });
 
-// Fetch Health Metrics
-export const getHealthMetrics = () => {
-  return axios.get(`${API_URL}/health-metrics`);
-};
+// Health Metric-related functions
+export const getHealthMetrics = () => api.get('/healthmetrics');
+export const addHealthMetric = (metricType, value, timestamp, userId) => api.post('/health-metrics', { metricType, value, timestamp, userId });
 
-// Create a Health Metric
-export const createHealthMetric = (metric) => {
-  return axios.post(`${API_URL}/health-metrics`, metric);
-};
+// Symptom-related functions
+export const getSymptoms = () => api.get('/symptoms');
+export const addSymptom = (symptomType, severity, description, timestamp, userId) => api.post('/symptoms', { symptomType, severity, description, timestamp, userId });
 
-// Fetch Symptoms
-export const getSymptoms = () => {
-  return axios.get(`${API_URL}/symptoms`);
-};
+// Appointment-related functions
+export const getAppointments = () => api.get('/appointments');
+export const addAppointment = (doctorName, location, appointmentDate, reasonForVisit, userId) => api.post('/appointments', { doctorName, location, appointmentDate, reasonForVisit, userId });
 
-// Create a Symptom
-export const createSymptom = (symptom) => {
-  return axios.post(`${API_URL}/symptoms`, symptom);
-};
-
-// Fetch Appointments
-export const getAppointments = () => {
-  return axios.get(`${API_URL}/appointments`);
-};
-
-// Create an Appointment
-export const createAppointment = (appointment) => {
-  return axios.post(`${API_URL}/appointments`, appointment);
-};
+export default api;
