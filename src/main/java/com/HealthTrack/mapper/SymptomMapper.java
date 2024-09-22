@@ -13,7 +13,8 @@ public class SymptomMapper {
                 symptom.getSeverity(),
                 symptom.getDescription(),
                 symptom.getTimestamp(),
-                symptom.getUser().getId()// Get user ID from the entity
+                symptom.getUser() != null ? symptom.getUser().getId() : null  // Check for null user Really important
+
         );
     }
 
