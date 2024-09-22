@@ -51,6 +51,6 @@ public class SymptomController {
 
         symptomService.deleteSymptom(idSymptom);
 
-        return  ResponseEntity.ok("Deleted Symptom Successful");
+        return  ResponseEntity.ok("Deleted Symptom Successfully");
     }
 }
