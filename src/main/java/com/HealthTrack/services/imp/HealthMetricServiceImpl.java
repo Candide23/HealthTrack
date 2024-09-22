@@ -32,7 +32,7 @@ public class HealthMetricServiceImpl implements HealthMetricService {
     }
 
     @Override
-    public HealthMetricDto getHealthMetricById(Long healthMetricId) {
+    public HealthMetricDto findHealthMetricById(Long healthMetricId) {
 
         HealthMetric healthMetric = healthMetricRepository.findById(healthMetricId)
                 .orElseThrow(() -> new RuntimeException("healthMetricId not found"));
@@ -40,7 +40,7 @@ public class HealthMetricServiceImpl implements HealthMetricService {
     }
 
     @Override
-    public List<HealthMetricDto> getAllHealthMetric() {
+    public List<HealthMetricDto> findAllHealthMetric() {
 
         List<HealthMetric> healthMetrics = healthMetricRepository.findAll();
         return healthMetrics.stream()

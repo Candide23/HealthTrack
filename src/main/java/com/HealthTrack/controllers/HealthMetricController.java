@@ -28,13 +28,13 @@ public class HealthMetricController {
 
     @GetMapping("/{id}")
     public ResponseEntity<HealthMetricDto> getHealthMetricsById(@PathVariable("id") Long healthMetricId) {
-        HealthMetricDto metric = healthMetricService.getHealthMetricById(healthMetricId);
+        HealthMetricDto metric = healthMetricService.findHealthMetricById(healthMetricId);
         return ResponseEntity.ok(metric);
     }
 
     @GetMapping
     public ResponseEntity<List<HealthMetricDto>> getAllHealthMetrics() {
-        List<HealthMetricDto> metrics = healthMetricService.getAllHealthMetric();
+        List<HealthMetricDto> metrics = healthMetricService.findAllHealthMetric();
         return ResponseEntity.ok(metrics);
     }
 
@@ -50,6 +50,6 @@ public class HealthMetricController {
 
          healthMetricService.deleteHealthMetric(healthMetricId);
 
-        return  ResponseEntity.ok("Deleted Metric Successful");
+        return  ResponseEntity.ok("Deleted Metric Successfully");
     }
 }
