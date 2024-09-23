@@ -1,75 +1,63 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import HealthMetric from '../HealthMetric/HealthMetric';
+import Symptom from '../Symptom/Symptom';
+import Appointment from '../Appointment/Appointment';
+import './Dashboard.css'; // Custom styles for the dashboard
 
 const Dashboard = () => {
-  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user')); // Get logged-in user data from localStorage
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">User Dashboard</h2>
+      <h2 className="text-center mb-4">Dashboard</h2>
 
+      {/* User Welcome Section */}
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="card mb-4 shadow-sm">
+            <div className="card-body text-center">
+              <h4>Welcome, {user ? user.username : 'User'}</h4>
+              <p>Email: {user ? user.email : ''}</p>
+              <p>Phone Number: {user ? user.phoneNumber : ''}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid Layout for Health Metrics, Symptoms, and Appointments */}
       <div className="row">
-        {/* Profile Section */}
-        <div className="col-12 col-md-6 col-lg-4 mb-4">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">User Profile</h5>
-              <p className="card-text">View and update your profile details.</p>
-              <button className="btn btn-primary" onClick={() => navigate('/profile')}>
-                Go to Profile
-              </button>
+        {/* Health Metrics */}
+        <div className="col-md-4">
+          <div className="card mb-4 shadow-sm">
+            <div className="card-header bg-primary text-white">
+              <h5 className="card-title mb-0">Health Metrics</h5>
+            </div>
+            <div className="card-body p-3">
+              <HealthMetric />
             </div>
           </div>
         </div>
 
-        {/* Health Metrics Section */}
-        <div className="col-12 col-md-6 col-lg-4 mb-4">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Health Metrics</h5>
-              <p className="card-text">Track your health metrics like weight, blood pressure, etc.</p>
-              <button className="btn btn-success" onClick={() => navigate('/healthmetrics')}>
-                View Health Metrics
-              </button>
+        {/* Symptoms */}
+        <div className="col-md-4">
+          <div className="card mb-4 shadow-sm">
+            <div className="card-header bg-success text-white">
+              <h5 className="card-title mb-0">Symptoms</h5>
+            </div>
+            <div className="card-body p-3">
+              <Symptom />
             </div>
           </div>
         </div>
 
-        {/* Appointments Section */}
-        <div className="col-12 col-md-6 col-lg-4 mb-4">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Appointments</h5>
-              <p className="card-text">Manage your upcoming appointments with doctors or specialists.</p>
-              <button className="btn btn-info" onClick={() => navigate('/appointments')}>
-                View Appointments
-              </button>
+        {/* Appointments */}
+        <div className="col-md-4">
+          <div className="card mb-4 shadow-sm">
+            <div className="card-header bg-warning text-white">
+              <h5 className="card-title mb-0">Appointments</h5>
             </div>
-          </div>
-        </div>
-
-        {/* Symptom Tracker Section */}
-        <div className="col-12 col-md-6 col-lg-4 mb-4">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Symptom Tracker</h5>
-              <p className="card-text">Log your daily symptoms and track patterns over time.</p>
-              <button className="btn btn-warning" onClick={() => navigate('/symptoms')}>
-                Track Symptoms
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Settings Section */}
-        <div className="col-12 col-md-6 col-lg-4 mb-4">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Settings</h5>
-              <p className="card-text">Update account settings and preferences.</p>
-              <button className="btn btn-secondary" onClick={() => navigate('/settings')}>
-                Account Settings
-              </button>
+            <div className="card-body p-3">
+              <Appointment />
             </div>
           </div>
         </div>
@@ -79,4 +67,14 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+
+
+
+
+
+
+
 

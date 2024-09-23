@@ -1,59 +1,153 @@
 import React, { useState, useEffect } from 'react';
-import { getHealthMetrics, addHealthMetric } from '../../services/api';
+import { HealthMetricAPI } from '../../services/api';
+import dayjs from 'dayjs';
 
 const HealthMetric = () => {
+  const metricOptions = [
+    { label: 'Weight (kg)', value: 'Weight' },
+    { label: 'Height (cm)', value: 'Height' },
+    { label: 'Blood Pressure (mmHg)', value: 'Blood Pressure' },
+    { label: 'Heart Rate (bpm)', value: 'Heart Rate' },
+    { label: 'Blood Sugar (mg/dL)', value: 'Blood Sugar' },
+    { label: 'Cholesterol (mg/dL)', value: 'Cholesterol' },
+    { label: 'BMI', value: 'BMI' },
+    { label: 'Body Temperature (°C)', value: 'Body Temperature' },
+    { label: 'Respiratory Rate (breaths per minute)', value: 'Respiratory Rate' },
+    { label: 'Oxygen Saturation (SpO2 %)', value: 'Oxygen Saturation' }
+  ];
+
   const [metrics, setMetrics] = useState([]);
-  const [metricType, setMetricType] = useState('');
+  const [metricType, setMetricType] = useState(metricOptions[0].value);
   const [value, setValue] = useState('');
-  const [timestamp, setTimestamp] = useState('');
+  const [editingId, setEditingId] = useState(null);
+
+  // Ensure that userId is fetched from localStorage
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-    const fetchMetrics = async () => {
-      const { data } = await getHealthMetrics();
-      setMetrics(data);
-    };
     fetchMetrics();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const fetchMetrics = async () => {
+    try {
+      const response = await HealthMetricAPI.getAll();
+      setMetrics(response.data);
+    } catch (error) {
+      console.error('Error fetching metrics:', error);
+    }
+  };
+
+  const handleSave = async (e) => {
     e.preventDefault();
-    await addHealthMetric(metricType, value, timestamp, 1);  // Replace 1 with the actual userId
-    setMetricType('');
+    const timestamp = dayjs().toISOString();
+    
+    // Ensure userId is included in the request body
+    const metricData = {
+      metricType,
+      value,
+      timestamp,
+      userId: userId  // Ensure userId is included here
+    };
+
+    try {
+      if (editingId) {
+        await HealthMetricAPI.update(editingId, metricData);
+      } else {
+        await HealthMetricAPI.create(metricData);
+      }
+      fetchMetrics();
+      resetForm();
+    } catch (error) {
+      console.error('Error saving metric:', error.response ? error.response.data : error.message);
+    }
+  };
+
+  const resetForm = () => {
+    setMetricType(metricOptions[0].value);
     setValue('');
-    setTimestamp('');
-    const { data } = await getHealthMetrics();
-    setMetrics(data);
+    setEditingId(null);
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Log Health Metric</h2>
-      <form onSubmit={handleSubmit}>
+    <div>
+      <form onSubmit={handleSave} className="mb-4">
         <div className="form-group">
           <label>Metric Type</label>
-          <input type="text" className="form-control" value={metricType} onChange={(e) => setMetricType(e.target.value)} required />
+          <select
+            className="form-control"
+            value={metricType}
+            onChange={(e) => setMetricType(e.target.value)}
+            required
+          >
+            {metricOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label>Value</label>
-          <input type="number" className="form-control" value={value} onChange={(e) => setValue(e.target.value)} required />
+          <input
+            type="number"
+            className="form-control"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            required
+          />
         </div>
-        <div className="form-group">
-          <label>Timestamp</label>
-          <input type="datetime-local" className="form-control" value={timestamp} onChange={(e) => setTimestamp(e.target.value)} required />
-        </div>
-        <button type="submit" className="btn btn-primary">Log Metric</button>
+        <button type="submit" className="btn btn-success btn-sm">
+          {editingId ? 'Update Metric' : 'Add Metric'}
+        </button>
       </form>
 
-      <h2 className="mt-5">Health Metrics</h2>
-      <ul className="list-group mt-3">
-        {metrics.map(metric => (
-          <li key={metric.id} className="list-group-item">
-            {metric.metricType} - {metric.value} at {new Date(metric.timestamp).toLocaleString()}
-          </li>
-        ))}
-      </ul>
+      <table className="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Timestamp</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {metrics.map((metric) => (
+            <tr key={metric.id}>
+              <td>{metric.metricType}</td>
+              <td>{metric.value}</td>
+              <td>{dayjs(metric.timestamp).format('YYYY-MM-DD HH:mm')}</td>
+              <td>
+                <button
+                  className="btn btn-warning btn-sm mr-2"
+                  onClick={() => {
+                    setMetricType(metric.metricType);
+                    setValue(metric.value);
+                    setEditingId(metric.id);
+                  }}
+                >
+                  <i className="fas fa-edit"></i> Edit
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => HealthMetricAPI.delete(metric.id).then(fetchMetrics)}
+                >
+                  <i className="fas fa-trash-alt"></i> Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
 export default HealthMetric;
+
+
+
+
+
+
+
+

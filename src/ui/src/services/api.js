@@ -1,25 +1,53 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api';  // Adjust this to your backend URL
+// Base URL for API requests
+const API_BASE_URL = 'http://localhost:8080/api';
 
+// Common configuration for Axios
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
+  withCredentials: true,  // Ensures credentials (cookies) are included
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
-// Auth-related functions
-export const login = (username, password) => api.post('/auth/login', { username, password });
-export const register = (username, password, email, phoneNumber) => api.post('/auth/register', { username, password, email, phoneNumber });
+// API for HealthMetric
+export const HealthMetricAPI = {
+  getAll: () => api.get('/healthMetrics'),
+  getById: (id) => api.get(`/healthMetrics/${id}`),
+  create: (data) => api.post('/healthMetrics', data),
+  update: (id, data) => api.put(`/healthMetrics/${id}`, data),
+  delete: (id) => api.delete(`/healthMetrics/${id}`)
+};
 
-// Health Metric-related functions
-export const getHealthMetrics = () => api.get('/healthmetrics');
-export const addHealthMetric = (metricType, value, timestamp, userId) => api.post('/healthmetrics', { metricType, value, timestamp, userId });
+// API for Symptom
+// Add Symptom API methods to the SymptomAPI object
+export const SymptomAPI = {
+  getAll: () => api.get('/symptoms'),
+  getById: (id) => api.get(`/symptoms/${id}`),
+  create: (data) => api.post('/symptoms', data),
+  update: (id, data) => api.put(`/symptoms/${id}`, data),
+  delete: (id) => api.delete(`/symptoms/${id}`)
+};
 
-// Symptom-related functions
-export const getSymptoms = () => api.get('/symptoms');
-export const addSymptom = (symptomType, severity, description, timestamp, userId) => api.post('/symptoms', { symptomType, severity, description, timestamp, userId });
 
-// Appointment-related functions
-export const getAppointments = () => api.get('/appointments');
-export const addAppointment = (doctorName, location, appointmentDate, reasonForVisit, userId) => api.post('/appointments', { doctorName, location, appointmentDate, reasonForVisit, userId });
+// API for Appointment
+export const AppointmentAPI = {
+  getAll: () => api.get('/appointments'),
+  getById: (id) => api.get(`/appointments/${id}`),
+  create: (data) => api.post('/appointments', data),
+  update: (id, data) => api.put(`/appointments/${id}`, data),
+  delete: (id) => api.delete(`/appointments/${id}`)
+};
 
-export default api;
+// API for User
+export const UserAPI = {
+  getAll: () => api.get('/users'),
+  getById: (id) => api.get(`/users/${id}`),
+  create: (data) => api.post('/users', data),
+  update: (id, data) => api.put(`/users/${id}`, data),
+  delete: (id) => api.delete(`/users/${id}`)
+};
+
+

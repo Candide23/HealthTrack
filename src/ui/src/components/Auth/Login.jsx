@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -8,26 +8,23 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      // Fetch all users from the backend
       const response = await axios.get('http://localhost:8080/api/users');
-
       const users = response.data;
 
-      // Check if the user exists and the password matches
+      // Check if the user exists and password matches
       const user = users.find(
-        (u) => u.username === username && u.password === password
+        (user) => user.username === username && user.password === password
       );
 
       if (user) {
-        // Handle login success: Navigate to the dashboard
-        navigate('/dashboard');
+        localStorage.setItem('user', JSON.stringify(user));
+        setError('');
+        navigate('/dashboard'); // Redirect to the dashboard on successful login
       } else {
-        // Handle login failure
-        setError('Invalid username or password');
+        setError('Invalid username or password.');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -37,35 +34,44 @@ const Login = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Username</label>
-          <input
-            type="text"
-            className="form-control"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <h2 className="text-center mb-4">Login</h2>
+              {error && <div className="alert alert-danger">{error}</div>}
+              <form onSubmit={handleLogin}>
+                <div className="form-group mb-3">
+                  <label>Username</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group mb-3">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary btn-block">
+                  Login
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p className="text-danger">{error}</p>}
-        <button type="submit" className="btn btn-primary">Login</button>
-      </form>
+      </div>
     </div>
   );
 };
 
 export default Login;
-
 

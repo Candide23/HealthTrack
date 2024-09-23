@@ -1,18 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css'; // Import the CSS for custom styles
+import './Home.css'; // Custom CSS for the homepage
 
 const Home = () => {
   return (
     <div className="home-container">
-      <div className="home-content">
-        <h1 className="home-title">Welcome to MediTrack</h1>
-        <p className="home-description">
-          Track your health metrics, log symptoms, and manage medical appointments in one convenient place.
-        </p>
-        <div className="home-buttons">
-          <Link to="/login" className="btn btn-primary home-btn">Login</Link>
-          <Link to="/register" className="btn btn-outline-primary home-btn">Register</Link>
+      <div className="overlay">
+        <div className="content text-center">
+          <h1 className="display-4 text-light">Welcome to HealthTrack</h1>
+          <p className="lead text-light">
+            Manage your health metrics, symptoms, and appointments in one place.
+          </p>
+          <div className="mt-5">
+            <Link to="/login" className="btn btn-primary btn-lg mr-3">
+              Login
+            </Link>
+            <Link to="/register" className="btn btn-success btn-lg">
+              Register
+            </Link>
+          </div>
         </div>
       </div>
     </div>
