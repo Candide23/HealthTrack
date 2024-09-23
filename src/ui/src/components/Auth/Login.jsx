@@ -1,18 +1,42 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
-  console.log('Rendering Login Component');  // Add this log to check if the component is rendered
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login submitted with:', username, password);
+
+    try {
+      // Fetch all users from the backend
+      const response = await axios.get('http://localhost:8080/api/users');
+
+      const users = response.data;
+
+      // Check if the user exists and the password matches
+      const user = users.find(
+        (u) => u.username === username && u.password === password
+      );
+
+      if (user) {
+        // Handle login success: Navigate to the dashboard
+        navigate('/dashboard');
+      } else {
+        // Handle login failure
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('An error occurred. Please try again.');
+    }
   };
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -35,6 +59,7 @@ const Login = () => {
             required
           />
         </div>
+        {error && <p className="text-danger">{error}</p>}
         <button type="submit" className="btn btn-primary">Login</button>
       </form>
     </div>
@@ -42,3 +67,5 @@ const Login = () => {
 };
 
 export default Login;
+
+

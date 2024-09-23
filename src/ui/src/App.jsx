@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Home from './components/Home/Home';  // Import the new Home component
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import HealthMetric from './components/HealthMetric/HealthMetric';
@@ -11,10 +12,9 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Add route for the base URL ("/") */}
-        <Route path="/" element={<Navigate to="/login" />} />
+        {/* Add Home route */}
+        <Route path="/" element={<Home />} />
         
-        {/* Other valid routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -22,8 +22,8 @@ const App = () => {
         <Route path="/symptoms" element={<Symptom />} />
         <Route path="/appointments" element={<Appointment />} />
 
-        {/* Fallback route for unmatched URLs */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        {/* Fallback route */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

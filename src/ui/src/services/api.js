@@ -12,7 +12,7 @@ export const register = (username, password, email, phoneNumber) => api.post('/a
 
 // Health Metric-related functions
 export const getHealthMetrics = () => api.get('/healthmetrics');
-export const addHealthMetric = (metricType, value, timestamp, userId) => api.post('/health-metrics', { metricType, value, timestamp, userId });
+export const addHealthMetric = (metricType, value, timestamp, userId) => api.post('/healthmetrics', { metricType, value, timestamp, userId });
 
 // Symptom-related functions
 export const getSymptoms = () => api.get('/symptoms');
