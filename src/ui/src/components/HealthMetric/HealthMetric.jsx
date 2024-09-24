@@ -21,8 +21,7 @@ const HealthMetric = () => {
   const [value, setValue] = useState('');
   const [editingId, setEditingId] = useState(null);
 
-  // Ensure that userId is fetched from localStorage
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem('userId'); // Get userId from localStorage
 
   useEffect(() => {
     fetchMetrics();
@@ -39,14 +38,18 @@ const HealthMetric = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const timestamp = dayjs().toISOString();
-    
-    // Ensure userId is included in the request body
+    const timestamp = dayjs().toISOString(); // Ensure correct timestamp format
+
+    if (!userId) {
+      console.error('User ID not found in localStorage.');
+      return;
+    }
+
     const metricData = {
       metricType,
-      value,
+      value: parseFloat(value), // Ensure it's a valid number
       timestamp,
-      userId: userId  // Ensure userId is included here
+      userId // Ensure userId is included here
     };
 
     try {
@@ -55,8 +58,8 @@ const HealthMetric = () => {
       } else {
         await HealthMetricAPI.create(metricData);
       }
-      fetchMetrics();
-      resetForm();
+      fetchMetrics(); // Refresh metrics after save
+      resetForm(); // Clear the form after save
     } catch (error) {
       console.error('Error saving metric:', error.response ? error.response.data : error.message);
     }
@@ -143,6 +146,7 @@ const HealthMetric = () => {
 };
 
 export default HealthMetric;
+
 
 
 

@@ -21,6 +21,7 @@ const Login = () => {
 
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('userId', user.id); // Save userId separately
         setError('');
         navigate('/dashboard'); // Redirect to the dashboard on successful login
       } else {
@@ -74,4 +75,5 @@ const Login = () => {
 };
 
 export default Login;
+
 
