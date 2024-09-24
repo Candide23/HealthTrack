@@ -39,7 +39,7 @@ const Login = () => {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h2 className="text-center mb-4">Login</h2>
+              <h2 >Login</h2>
               {error && <div className="alert alert-danger">{error}</div>}
               <form onSubmit={handleLogin}>
                 <div className="form-group mb-3">
@@ -62,7 +62,8 @@ const Login = () => {
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-primary btn-block">
+                <button type="submit" className="btn btn-primary btn-block"   style={{ fontSize: '12px', padding: '4px 8px' }}
+                >
                   Login
                 </button>
               </form>

@@ -7,6 +7,9 @@ import Dashboard from './components/Dashboard/Dashboard'; // Import Dashboard co
 import HealthMetric from './components/HealthMetric/HealthMetric';
 import Symptom from './components/Symptom/Symptom';
 import Appointment from './components/Appointment/Appointment';
+import Profile from './components/Profile/Profile';
+
+
 
 function App() {
   return (
@@ -21,6 +24,8 @@ function App() {
 
         {/* Dashboard Route */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} /> {/* Profile Management */}
+
 
         {/* Other Routes */}
         <Route path="/healthmetrics" element={<HealthMetric />} />
