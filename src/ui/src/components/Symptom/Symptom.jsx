@@ -17,7 +17,7 @@ const Symptom = () => {
   const [description, setDescription] = useState('');
   const [editingId, setEditingId] = useState(null);
 
-  const userId = localStorage.getItem('userId');  // Fetch the logged-in user ID
+  const userId = localStorage.getItem('userId');  
 
   useEffect(() => {
     fetchSymptoms();
@@ -25,7 +25,7 @@ const Symptom = () => {
 
   const fetchSymptoms = async () => {
     try {
-      const response = await SymptomAPI.getAll();
+      const response = await SymptomAPI.getAll(userId);
       setSymptoms(response.data);
     } catch (error) {
       console.error('Error fetching symptoms:', error);
@@ -40,7 +40,7 @@ const Symptom = () => {
       severity,
       description,
       timestamp,
-      userId: userId  // Pass user ID
+      userId: userId  
     };
 
     try {
@@ -62,6 +62,8 @@ const Symptom = () => {
     setDescription('');
     setEditingId(null);
   };
+
+ 
 
   return (
     <div>

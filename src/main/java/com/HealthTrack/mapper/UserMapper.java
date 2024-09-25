@@ -28,8 +28,8 @@ public class UserMapper {
                 user.getPassword(),
                 user.getEmail(),
                 user.getPhoneNumber(),
-                user.getSymptoms(),  // Directly set List<Symptom>
-                user.getHealthMetrics(),  // Directly set List<HealthMetric>
+                user.getSymptoms(),
+                user.getHealthMetrics(),
                 user.getAppointments()
         );
     }
@@ -43,9 +43,9 @@ public class UserMapper {
         user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setSymptoms(userDto.getSymptoms());  // Directly set List<Symptom>
-        user.setHealthMetrics(userDto.getHealthMetrics());  // Directly set List<HealthMetric>
-        user.setAppointments(userDto.getAppointments());  // Directly set List<Appointment>
+        user.setSymptoms(userDto.getSymptoms());
+        user.setHealthMetrics(userDto.getHealthMetrics());
+        user.setAppointments(userDto.getAppointments());
         return user;
 
     }

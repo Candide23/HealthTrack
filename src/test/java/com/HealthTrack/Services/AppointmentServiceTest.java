@@ -68,24 +68,24 @@ public class AppointmentServiceTest {
     }
 
     @Test
-    public void testFindAllAppointments() {
-
+    public void testFindAllAppointmentsByUserId() {
+        // Arrange
+        Long userId = 1L;
 
         Appointment appointment1 = new Appointment(1L, "Dr. Smith", "City Clinic", LocalDateTime.now(), "Routine checkup", null);
         Appointment appointment2 = new Appointment(2L, "Dr. Johnson", "General Hospital", LocalDateTime.now(), "Follow-up", null);
 
-        List<Appointment> appointments = Arrays.asList(appointment1,appointment2);
+        List<Appointment> appointments = Arrays.asList(appointment1, appointment2);
 
-        when(appointmentRepository.findAll()).thenReturn(appointments);
+        when(appointmentRepository.findByUserId(userId)).thenReturn(appointments);
 
-
-        List<AppointmentDto> appointmentDtos = appointmentService.findAllAppointment();
+        List<AppointmentDto> appointmentDtos = appointmentService.findAllAppointmentByUserId(userId);
 
         assertEquals(2, appointmentDtos.size());
         assertEquals("Dr. Smith", appointmentDtos.get(0).getDoctorName());
         assertEquals("Dr. Johnson", appointmentDtos.get(1).getDoctorName());
 
-        verify(appointmentRepository, times(1)).findAll();
+        verify(appointmentRepository, times(1)).findByUserId(userId);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class AppointmentServiceTest {
 
         appointmentService.deleteAppointment(1L);
 
-        verify(userRepository, times(1)).deleteById(1L);
+        verify(appointmentRepository, times(1)).deleteById(1L);
 
 
     }

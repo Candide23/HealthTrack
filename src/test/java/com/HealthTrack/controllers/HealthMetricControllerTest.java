@@ -29,6 +29,7 @@ public class HealthMetricControllerTest {
     @InjectMocks
     private HealthMetricController healthMetricController;
 
+
     @Test
     public void testCreateHealthMetric() throws Exception {
         HealthMetricDto healthMetricDto = new HealthMetricDto(null, "Weight", 75.5, LocalDateTime.now(), 1L);
@@ -38,7 +39,8 @@ public class HealthMetricControllerTest {
 
         mockMvc = MockMvcBuilders.standaloneSetup(healthMetricController).build();
 
-        mockMvc.perform(post("/api/healthMetric")
+
+        mockMvc.perform(post("/api/healthMetrics")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"metricType\":\"Weight\",\"value\":75.5,\"timestamp\":\"2023-09-20T10:00:00\",\"userId\":1}"))
                 .andExpect(status().isCreated())
@@ -53,23 +55,25 @@ public class HealthMetricControllerTest {
 
         mockMvc = MockMvcBuilders.standaloneSetup(healthMetricController).build();
 
-        mockMvc.perform(get("/api/healthMetric/1"))
+
+        mockMvc.perform(get("/api/healthMetrics/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.metricType").value("Weight"));
     }
 
     @Test
-    public void testFindAllHealthMetrics() throws Exception {
+    public void testFindAllHealthMetricsByUserId() throws Exception {
         List<HealthMetricDto> metrics = Arrays.asList(
                 new HealthMetricDto(1L, "Weight", 75.5, LocalDateTime.now(), 1L),
                 new HealthMetricDto(2L, "Blood Pressure", 120.8, LocalDateTime.now(), 1L)
         );
 
-        when(healthMetricService.findAllHealthMetric()).thenReturn(metrics);
+        when(healthMetricService.findAllHealthMetricsByUserId(1L)).thenReturn(metrics);
 
         mockMvc = MockMvcBuilders.standaloneSetup(healthMetricController).build();
 
-        mockMvc.perform(get("/api/health-metrics"))
+        mockMvc.perform(get("/api/healthMetrics")
+                        .param("userId", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].metricType").value("Weight"))
                 .andExpect(jsonPath("$[1].metricType").value("Blood Pressure"));
@@ -83,7 +87,7 @@ public class HealthMetricControllerTest {
 
         mockMvc = MockMvcBuilders.standaloneSetup(healthMetricController).build();
 
-        mockMvc.perform(put("/api/healthMetric/1")
+        mockMvc.perform(put("/api/healthMetrics/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"metricType\":\"Blood Pressure\",\"value\":120.80,\"timestamp\":\"2023-09-20T10:00:00\",\"userId\":1}"))
                 .andExpect(status().isOk())
@@ -92,12 +96,12 @@ public class HealthMetricControllerTest {
 
     @Test
     public void testDeleteHealthMetric() throws Exception {
+
         mockMvc = MockMvcBuilders.standaloneSetup(healthMetricController).build();
 
-        mockMvc.perform(delete("/api/healthMetric/1"))
+        mockMvc.perform(delete("/api/healthMetrics/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Deleted Metric Successfully"));
-
 
         verify(healthMetricService, times(1)).deleteHealthMetric(1L);
     }

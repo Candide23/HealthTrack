@@ -34,8 +34,8 @@ public class SymptomController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SymptomDto>> getAllSymptoms() {
-        List<SymptomDto> symptoms = symptomService.findAllSymptom();
+    public ResponseEntity<List<SymptomDto>> getAllSymptomsByUserId(Long userId) {
+        List<SymptomDto> symptoms = symptomService.findAllSymptomByUserId(userId);
         return new ResponseEntity<>(symptoms, HttpStatus.OK);
     }
 

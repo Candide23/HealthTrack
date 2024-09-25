@@ -34,8 +34,8 @@ public class HealthMetricController {
     }
 
     @GetMapping
-    public ResponseEntity<List<HealthMetricDto>> getAllHealthMetrics() {
-        List<HealthMetricDto> metrics = healthMetricService.findAllHealthMetric();
+    public ResponseEntity<List<HealthMetricDto>> getAllHealthMetricsByUserId(@RequestParam("userId") Long userId ) {
+        List<HealthMetricDto> metrics = healthMetricService.findAllHealthMetricsByUserId(userId);
         return ResponseEntity.ok(metrics);
     }
 

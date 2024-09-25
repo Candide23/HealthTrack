@@ -24,8 +24,8 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AppointmentDto>> getAllAppointments() {
-        List<AppointmentDto> appointments = appointmentService.findAllAppointment();
+    public ResponseEntity<List<AppointmentDto>> getAllAppointmentsByUserId(@RequestParam("userId") Long userId ) {
+        List<AppointmentDto> appointments = appointmentService.findAllAppointmentByUserId(userId);
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 

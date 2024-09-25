@@ -18,7 +18,7 @@ const Appointment = () => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await AppointmentAPI.getAll();
+      const response = await AppointmentAPI.getAll(userId);
       setAppointments(response.data);
     } catch (error) {
       console.error('Error fetching appointments:', error);

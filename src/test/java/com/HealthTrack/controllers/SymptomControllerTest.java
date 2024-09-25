@@ -69,18 +69,20 @@ public class SymptomControllerTest {
     }
 
     @Test
-    public void testFindAllSymptom() throws Exception {
+    public void testFindAllSymptomsByUserId() throws Exception {
 
-        List<SymptomDto> symptomDtoList = Arrays.asList(new SymptomDto(1L, "Headache", 5, "Mild headache", LocalDateTime.now(), 1L),
-                new SymptomDto(2L, "Stomach", 5, "Mild stomach", LocalDateTime.now(), 1L)
-                );
+        Long userId = 1L;
+        List<SymptomDto> symptomDtoList = Arrays.asList(
+                new SymptomDto(1L, "Headache", 5, "Mild headache", LocalDateTime.now(), userId),
+                new SymptomDto(2L, "Stomach", 5, "Mild stomach", LocalDateTime.now(), userId)
+        );
 
-
-        when(symptomService.findAllSymptom()).thenReturn(symptomDtoList);
+        when(symptomService.findAllSymptomByUserId(userId)).thenReturn(symptomDtoList);
 
         mockMvc = MockMvcBuilders.standaloneSetup(symptomController).build();
 
-        mockMvc.perform(get("/api/symptoms"))
+        mockMvc.perform(get("/api/symptoms")
+                        .param("userId", String.valueOf(userId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].symptomType").value("Headache"))
                 .andExpect(jsonPath("$[1].symptomType").value("Stomach"));

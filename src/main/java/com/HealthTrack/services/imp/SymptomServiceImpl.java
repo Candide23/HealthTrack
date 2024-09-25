@@ -7,6 +7,8 @@ import com.HealthTrack.models.User;
 import com.HealthTrack.repositories.SymptomRepository;
 import com.HealthTrack.repositories.UserRepository;
 import com.HealthTrack.services.SymptomService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +24,17 @@ public class SymptomServiceImpl implements SymptomService {
     private UserRepository userRepository;
 
 
+
+
     @Override
     public SymptomDto createSymptom(SymptomDto symptomDto) {
-        User user = userRepository.findById(symptomDto.getUserId()).orElseThrow();
+        User user = userRepository.findById(symptomDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User with ID " + symptomDto.getUserId() + " not found"));
+
         Symptom symptom = SymptomMapper.mapToSymptom(symptomDto, user);
+
+
+
         Symptom saveSymptom = symptomRepository.save(symptom);
 
         return SymptomMapper.mapToSymptomDto(saveSymptom);
@@ -39,8 +48,8 @@ public class SymptomServiceImpl implements SymptomService {
     }
 
     @Override
-    public List<SymptomDto> findAllSymptom() {
-        List<Symptom> symptoms = symptomRepository.findAll();
+    public List<SymptomDto> findAllSymptomByUserId(Long userId) {
+        List<Symptom> symptoms = symptomRepository.findByUserId(userId);
 
         return symptoms.stream().map((symptom -> SymptomMapper.mapToSymptomDto(symptom)))
                 .collect(Collectors.toList());

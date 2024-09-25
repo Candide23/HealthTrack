@@ -23,7 +23,8 @@ public class HealthMetricServiceImpl implements HealthMetricService {
 
     @Override
     public HealthMetricDto createHealthMetric(HealthMetricDto healthMetricDto) {
-        User user = userRepository.findById(healthMetricDto.getUserId()).orElseThrow();
+
+        User user = userRepository.findById(healthMetricDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));;
 
 
         HealthMetric healthMetric = HealthMetricMapper.mapToHealthMetric(healthMetricDto, user);
@@ -39,14 +40,17 @@ public class HealthMetricServiceImpl implements HealthMetricService {
         return HealthMetricMapper.mapToHealthMetricDto(healthMetric);
     }
 
-    @Override
-    public List<HealthMetricDto> findAllHealthMetric() {
 
-        List<HealthMetric> healthMetrics = healthMetricRepository.findAll();
+    @Override
+    public List<HealthMetricDto> findAllHealthMetricsByUserId(Long userId) {
+
+        List<HealthMetric> healthMetrics = healthMetricRepository.findByUserId(userId);
+
         return healthMetrics.stream()
-                .map((healthMetric -> HealthMetricMapper.mapToHealthMetricDto(healthMetric)))
+                .map(HealthMetricMapper::mapToHealthMetricDto)
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public HealthMetricDto updateHealthMetric(Long healthMetricId, HealthMetricDto healthMetricDto) {

@@ -4,14 +4,14 @@ import dayjs from 'dayjs';
 
 const HealthMetric = () => {
   const metricOptions = [
-    { label: 'Weight (kg)', value: 'Weight' },
-    { label: 'Height (cm)', value: 'Height' },
+    { label: 'Weight (lbs)', value: 'Weight' },
+    { label: 'Height (ft/in)', value: 'Height' },
     { label: 'Blood Pressure (mmHg)', value: 'Blood Pressure' },
     { label: 'Heart Rate (bpm)', value: 'Heart Rate' },
     { label: 'Blood Sugar (mg/dL)', value: 'Blood Sugar' },
     { label: 'Cholesterol (mg/dL)', value: 'Cholesterol' },
     { label: 'BMI', value: 'BMI' },
-    { label: 'Body Temperature (°C)', value: 'Body Temperature' },
+    { label: 'Body Temperature (°F)', value: 'Body Temperature' },
     { label: 'Respiratory Rate (breaths per minute)', value: 'Respiratory Rate' },
     { label: 'Oxygen Saturation (SpO2 %)', value: 'Oxygen Saturation' }
   ];
@@ -25,12 +25,13 @@ const HealthMetric = () => {
 
   useEffect(() => {
     fetchMetrics();
+
   }, []);
 
   const fetchMetrics = async () => {
     try {
-      const response = await HealthMetricAPI.getAll();
-      setMetrics(response.data);
+      const response = await HealthMetricAPI.getAll(userId);
+            setMetrics(response.data);
     } catch (error) {
       console.error('Error fetching metrics:', error);
     }

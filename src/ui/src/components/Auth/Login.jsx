@@ -14,16 +14,15 @@ const Login = () => {
       const response = await axios.get('http://localhost:8080/api/users');
       const users = response.data;
 
-      // Check if the user exists and password matches
       const user = users.find(
         (user) => user.username === username && user.password === password
       );
 
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('userId', user.id); // Save userId separately
+        localStorage.setItem('userId', user.id); 
         setError('');
-        navigate('/dashboard'); // Redirect to the dashboard on successful login
+        navigate('/dashboard'); 
       } else {
         setError('Invalid username or password.');
       }

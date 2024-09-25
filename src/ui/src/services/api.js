@@ -14,7 +14,7 @@ const api = axios.create({
 
 // API for HealthMetric
 export const HealthMetricAPI = {
-  getAll: () => api.get('/healthMetrics'),
+  getAll: (userId) => api.get(`/healthMetrics?userId=${userId}`),
   getById: (id) => api.get(`/healthMetrics/${id}`),
   create: (data) => api.post('/healthMetrics', data),
   update: (id, data) => api.put(`/healthMetrics/${id}`, data),
@@ -24,7 +24,7 @@ export const HealthMetricAPI = {
 // API for Symptom
 // Add Symptom API methods to the SymptomAPI object
 export const SymptomAPI = {
-  getAll: () => api.get('/symptoms'),
+  getAll: (userId) => api.get(`/symptoms?userId=${userId}`),
   getById: (id) => api.get(`/symptoms/${id}`),
   create: (data) => api.post('/symptoms', data),
   update: (id, data) => api.put(`/symptoms/${id}`, data),
@@ -34,20 +34,13 @@ export const SymptomAPI = {
 
 // API for Appointment
 export const AppointmentAPI = {
-  getAll: () => api.get('/appointments'),
+  getAll: (userId) => api.get(`/appointments?userId=${userId}`),
   getById: (id) => api.get(`/appointments/${id}`),
   create: (data) => api.post('/appointments', data),
   update: (id, data) => api.put(`/appointments/${id}`, data),
   delete: (id) => api.delete(`/appointments/${id}`)
 };
 
-// API for User
-export const UserAPI = {
-  getAll: () => api.get('/users'),
-  getById: (id) => api.get(`/users/${id}`),
-  create: (data) => api.post('/users', data),
-  update: (id, data) => api.put(`/users/${id}`, data),
-  delete: (id) => api.delete(`/users/${id}`)
-};
+
 
 

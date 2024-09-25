@@ -27,5 +27,5 @@ public class HealthMetric {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;  // The user who logged the health metric
+    private User user;
 }

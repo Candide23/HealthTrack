@@ -20,10 +20,10 @@ public class Symptom {
     private Long id;
 
     @Column(nullable = false)
-    private String symptomType;  // e.g., headache, fatigue
+    private String symptomType;
 
     @Column(nullable = false)
-    private int severity;  // 1 to 10
+    private int severity;
 
     @Column(nullable = false)
     private String description;
@@ -33,5 +33,5 @@ public class Symptom {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;  // The user who logged the sympto
+    private User user;
 }

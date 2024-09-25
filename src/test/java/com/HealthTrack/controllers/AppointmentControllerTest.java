@@ -59,21 +59,25 @@ public class AppointmentControllerTest {
     }
 
     @Test
-    public void testFindAllAppointments() throws Exception {
+    public void testFindAllAppointmentsByUserId() throws Exception {
+
+        Long userId = 1L;
         List<AppointmentDto> appointments = Arrays.asList(
-                new AppointmentDto(301L, "Dr. Smith", "City Clinic", LocalDateTime.now(), "Routine checkup", 1L),
-                new AppointmentDto(302L, "Dr. Johnson", "General Hospital", LocalDateTime.now(), "Follow-up", 1L)
+                new AppointmentDto(1L, "Dr. Smith", "City Clinic", LocalDateTime.now(), "Routine checkup", 1L),
+                new AppointmentDto(2L, "Dr. Johnson", "General Hospital", LocalDateTime.now(), "Follow-up", 1L)
         );
 
-        when(appointmentService.findAllAppointment()).thenReturn(appointments);
+        when(appointmentService.findAllAppointmentByUserId(userId)).thenReturn(appointments);
 
         mockMvc = MockMvcBuilders.standaloneSetup(appointmentController).build();
 
-        mockMvc.perform(get("/api/appointments"))
+        mockMvc.perform(get("/api/appointments")
+                        .param("userId", String.valueOf(userId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].doctorName").value("Dr. Smith"))
                 .andExpect(jsonPath("$[1].doctorName").value("Dr. Johnson"));
     }
+
 
     @Test
     public void testUpdateAppointment() throws Exception {

@@ -60,19 +60,22 @@ public class HealthMetricServiceTest {
 
     @Test
     public void testFindAllHealthMetrics() {
+        Long userId = 1L;
         HealthMetric healthMetric1 = new HealthMetric(1L, "Weight", 75.5, LocalDateTime.now(), null);
         HealthMetric healthMetric2 = new HealthMetric(2L, "Blood Pressure", 120.80, LocalDateTime.now(), null);
 
-        when(healthMetricRepository.findAll()).thenReturn(Arrays.asList(healthMetric1, healthMetric2));
+        when(healthMetricRepository.findByUserId(userId)).thenReturn(Arrays.asList(healthMetric1, healthMetric2));
 
-        List<HealthMetricDto> healthMetricDtos = healthMetricService.findAllHealthMetric();
+        List<HealthMetricDto> healthMetricDtos = healthMetricService.findAllHealthMetricsByUserId(userId);
 
         assertEquals(2, healthMetricDtos.size());
         assertEquals("Weight", healthMetricDtos.get(0).getMetricType());
         assertEquals("Blood Pressure", healthMetricDtos.get(1).getMetricType());
 
-        verify(healthMetricRepository, times(1)).findAll();
+        // Verify the repository interaction
+        verify(healthMetricRepository, times(1)).findByUserId(userId);
     }
+
 
 
     @Test

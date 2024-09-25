@@ -7,6 +7,7 @@ const Profile = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const userId = JSON.parse(localStorage.getItem('user')).id;
@@ -22,6 +23,7 @@ const Profile = () => {
       setUsername(response.data.username);
       setEmail(response.data.email);
       setPhoneNumber(response.data.phoneNumber);
+      setPassword(response.data.password);
     } catch (error) {
       console.error('Error fetching user data:', error);
       setError('Failed to load user data.');
@@ -35,10 +37,19 @@ const Profile = () => {
         username,
         email,
         phoneNumber,
+        password
       };
       await axios.put(`http://localhost:8080/api/users/${userId}`, updatedUser);
+
+      // Update localStorage with the new user data
+      localStorage.setItem('user', JSON.stringify({ id: userId, ...updatedUser }));
+
+      // Manually trigger a 'storage' event to notify other components like Dashboard
+      window.dispatchEvent(new Event('storage'));
+
       setError('');
       alert('Profile updated successfully.');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error updating profile:', error);
       setError('Failed to update profile.');
@@ -59,7 +70,7 @@ const Profile = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center ">Manage Profile</h2>
+      <h2 className="text-center">Manage Profile</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       {user ? (
         <form onSubmit={handleUpdate}>
@@ -93,15 +104,25 @@ const Profile = () => {
               required
             />
           </div>
+          <div className="form-group mb-3">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
           <button type="submit" className="btn btn-primary btn-sm">
-              Update Profile
+            Update Profile
           </button>
           <button
             type="button"
             className="btn btn-danger btn-sm"
             onClick={handleDelete}
           >
-              Delete Profile
+            Delete Profile
           </button>
         </form>
       ) : (

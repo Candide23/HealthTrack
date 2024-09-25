@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,6 +58,32 @@ public class SymptomServiceTest {
         assertEquals("Headache", symptomDto.getSymptomType());
         verify(symptomRepository, times(1)).findById(1L);
     }
+
+    @Test
+    public void testFindAllSymptomByUserId() {
+        // Create a user and a list of symptoms
+        Long userId = 1L;
+        User user = new User(userId, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null);
+        List<Symptom> symptoms = Arrays.asList(
+                new Symptom(1L, "Headache", 5, "Mild headache", LocalDateTime.now(), user),
+                new Symptom(2L, "Fever", 7, "High fever", LocalDateTime.now(), user)
+        );
+
+        // Mock the repository to return the symptoms list when the userId is queried
+        when(symptomRepository.findByUserId(userId)).thenReturn(symptoms);
+
+        // Call the service method to test
+        List<SymptomDto> result = symptomService.findAllSymptomByUserId(userId);
+
+        // Verify that the repository was called
+        verify(symptomRepository, times(1)).findByUserId(userId);
+
+        // Assert the results
+        assertEquals(2, result.size());
+        assertEquals("Headache", result.get(0).getSymptomType());
+        assertEquals("Fever", result.get(1).getSymptomType());
+    }
+
 
     @Test
     public void testUpdateSymptom() {
