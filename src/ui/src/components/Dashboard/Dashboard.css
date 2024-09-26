@@ -1,41 +1,37 @@
 /* Custom Dashboard Styles */
+/* Dashboard.css */
 .container {
-    max-width: 1200px;
-  }
-  
-  .card {
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  .card-header {
-    font-size: 1.25rem;
-    padding: 1rem;
-  }
-  
-  .card-body {
-    padding: 1.5rem;
-  }
-  
-  .btn-sm {
-    font-size: 0.875rem;
-    padding: 0.25rem 0.5rem;
-  }
-  
-  .table-sm th, .table-sm td {
-    padding: 0.3rem;
-  }
-  
-  .shadow-sm {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  }
-  
-  h5.card-title {
-    margin-bottom: 0;
-  }
-  
-  p {
-    margin-bottom: 1rem;
-  }
-  
-  
+  background-image: url('/public/dashboard-bg.png'); /* Adjust the path as per your project structure */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.8); /* Make cards slightly transparent for better readability */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-sm {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0;
+}
+
+h2, h4 {
+  color: #2c3e50;
+}
+
+.btn-group .btn {
+  margin-right: 10px;
+}
+
+.mt-5 {
+  margin-top: 30px !important;
+}

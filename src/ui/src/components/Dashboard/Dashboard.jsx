@@ -9,7 +9,6 @@ const Dashboard = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user'))); 
   const navigate = useNavigate();
 
- 
   useEffect(() => {
     const updatedUser = JSON.parse(localStorage.getItem('user'));
     if (!updatedUser) {
@@ -18,13 +17,12 @@ const Dashboard = () => {
     setUser(updatedUser);
   }, [navigate]);
 
-
   const handleLogout = () => {
     localStorage.clear(); 
     navigate('/'); 
   };
 
-    const goToProfile = () => {
+  const goToProfile = () => {
     navigate('/profile');
   };
 
@@ -32,7 +30,6 @@ const Dashboard = () => {
     <div className="container mt-5">
       <h2 className="text-center mb-4">Dashboard</h2>
 
-   
       <div className="row justify-content-center">
         <div className="col-md-8">
           <div className="card mb-4 shadow-sm">
@@ -41,7 +38,6 @@ const Dashboard = () => {
               <p>Email: {user ? user.email : ''}</p>
               <p>Phone Number: {user ? user.phoneNumber : ''}</p>
 
-          
               <div className="btn-group" role="group">
                 <button className="btn btn-danger btn-sm" onClick={handleLogout}>
                   Logout
@@ -94,6 +90,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 
 
 
