@@ -1,6 +1,7 @@
 package com.HealthTrack.services;
 
 import com.HealthTrack.dtos.HealthMetricDto;
+import com.HealthTrack.models.HealthMetric;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ public interface HealthMetricService {
     HealthMetricDto updateHealthMetric(Long healthMetricId, HealthMetricDto healthMetricDto);
 
     void deleteHealthMetric(Long healthMetricId);
+
 
 
 }
