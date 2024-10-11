@@ -1,29 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HealthMetric from '../HealthMetric/HealthMetric';
 import Symptom from '../Symptom/Symptom';
 import Appointment from '../Appointment/Appointment';
+import Notification from '../Notification/Notification';  // Import Notification component
 import './Dashboard.css'; 
 
 const Dashboard = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user'))); 
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const notificationRef = useRef(null);  // Reference to Notification component
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const updatedUser = JSON.parse(localStorage.getItem('user'));
     if (!updatedUser) {
-      navigate('/login'); 
+      navigate('/login');
     }
     setUser(updatedUser);
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.clear(); 
-    navigate('/'); 
+    localStorage.clear();
+    navigate('/');
   };
 
   const goToProfile = () => {
     navigate('/profile');
+  };
+
+  const triggerNotificationRefresh = () => {
+    if (notificationRef.current) {
+      notificationRef.current();  // Trigger notification refresh
+    }
   };
 
   return (
@@ -51,6 +60,20 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Notifications Section */}
+      <div className="row">
+        <div className="col-md-12">
+          <div className="card mb-4 shadow-sm">
+            <div className="card-header bg-info text-white">
+              <h5 className="card-title mb-0">Notifications</h5>
+            </div>
+            <div className="card-body p-3">
+              <Notification fetchNewNotifications={(fetchNotifications) => (notificationRef.current = fetchNotifications)} />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="row">
         <div className="col-md-4">
           <div className="card mb-4 shadow-sm">
@@ -58,7 +81,7 @@ const Dashboard = () => {
               <h5 className="card-title mb-0">Health Metrics</h5>
             </div>
             <div className="card-body p-3">
-              <HealthMetric />
+              <HealthMetric triggerNotificationRefresh={triggerNotificationRefresh} />
             </div>
           </div>
         </div>
@@ -90,6 +113,12 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+
+
+
 
 
 

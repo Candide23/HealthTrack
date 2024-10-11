@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HealthMetricAPI } from '../../services/api';
 import dayjs from 'dayjs';
 
-const HealthMetric = () => {
+const HealthMetric = ({ triggerNotificationRefresh }) => {
   const metricOptions = [
     { label: 'Weight (lbs)', value: 'Weight' },
     { label: 'Height (ft/in)', value: 'Height' },
@@ -25,13 +25,12 @@ const HealthMetric = () => {
 
   useEffect(() => {
     fetchMetrics();
-
   }, []);
 
   const fetchMetrics = async () => {
     try {
       const response = await HealthMetricAPI.getAll(userId);
-            setMetrics(response.data);
+      setMetrics(response.data);
     } catch (error) {
       console.error('Error fetching metrics:', error);
     }
@@ -59,8 +58,9 @@ const HealthMetric = () => {
       } else {
         await HealthMetricAPI.create(metricData);
       }
-      fetchMetrics(); 
-      resetForm(); 
+      fetchMetrics();
+      resetForm();
+      triggerNotificationRefresh();  // Trigger notification update after adding the metric
     } catch (error) {
       console.error('Error saving metric:', error.response ? error.response.data : error.message);
     }
@@ -147,6 +147,7 @@ const HealthMetric = () => {
 };
 
 export default HealthMetric;
+
 
 
 

@@ -8,6 +8,7 @@ import HealthMetric from './components/HealthMetric/HealthMetric';
 import Symptom from './components/Symptom/Symptom';
 import Appointment from './components/Appointment/Appointment';
 import Profile from './components/Profile/Profile';
+import Notification from './components/Notification/Notification';
 
 
 
@@ -31,6 +32,8 @@ function App() {
         <Route path="/healthmetrics" element={<HealthMetric />} />
         <Route path="/symptoms" element={<Symptom />} />
         <Route path="/appointments" element={<Appointment />} />
+        <Route path="/notification" element={<Notification />} /> {/* Notifications Management */}
+
       </Routes>
     </Router>
   );

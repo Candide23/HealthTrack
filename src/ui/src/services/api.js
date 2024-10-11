@@ -41,6 +41,22 @@ export const AppointmentAPI = {
   delete: (id) => api.delete(`/appointments/${id}`)
 };
 
+// API for Notifications
+export const NotificationAPI = {
+  // Get all notifications for a specific user
+  getAll: (userId) => api.get(`/notifications/user/${userId}`),
+  
+  // Mark a notification as read by its ID
+  markAsRead: (notificationId) => api.put(`/notifications/${notificationId}/read`),
+  delete: (notificationId) => api.delete(`/notifications/${notificationId}`),
+
+
+
+};
+
+
+
+
 
 
 
