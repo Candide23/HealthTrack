@@ -21,6 +21,9 @@ public class Notification {
     @Column(nullable = false)
     private String message;
 
+    private String metricType;  // Ensure this field is present
+
+
     @Column(nullable = false)
     private String type;  // For example: "HealthMetricAlert", "AppointmentReminder", etc.
 

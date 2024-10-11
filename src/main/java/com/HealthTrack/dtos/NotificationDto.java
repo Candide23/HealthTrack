@@ -15,6 +15,9 @@ public class NotificationDto {
 
     private Long id;
     private String message;
+
+    private String metricType;
+
     private String type;
     private boolean isRead;
     private LocalDateTime timestamp;

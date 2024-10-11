@@ -33,31 +33,40 @@ public class NotificationServiceImpl implements NotificationService {
 
         // Thresholds for different health metrics
         Map<String, Double> thresholds = new HashMap<>();
-        thresholds.put("Blood Pressure", 140.0);
-        thresholds.put("Heart Rate", 100.0);
-        thresholds.put("Blood Sugar", 180.0);
+        thresholds.put("Blood Pressure", 140.0);    // Systolic BP > 140 mmHg
+        thresholds.put("Heart Rate", 100.0);        // Heart Rate > 100 bpm (tachycardia)
+        thresholds.put("Blood Sugar", 180.0);       // Blood Sugar > 180 mg/dL (post-meal hyperglycemia)
+        thresholds.put("Cholesterol", 200.0);       // Cholesterol > 200 mg/dL (high cholesterol)
+        thresholds.put("Body Temperature", 38.0);   // Body Temperature > 38°C (fever)
+        thresholds.put("Respiratory Rate", 20.0);   // Respiratory Rate > 20 breaths per minute (tachypnea)
+        thresholds.put("Oxygen Saturation", 90.0);  // Oxygen Saturation < 90% (hypoxemia)
+        thresholds.put("BMI", 30.0);                // BMI > 30 (Obesity)
+        thresholds.put("Weight", 150.0);            // Weight > 150 kg (high weight)
+        thresholds.put("Height", 200.0);            // Height > 200 cm (unusual height)
+        thresholds.put("Blood Pressure Diastolic", 90.0); // Diastolic BP > 90 mmHg
 
-        // Check if the metric exceeds the threshold
         Double thresholdValue = thresholds.get(healthMetric.getMetricType());
         if (thresholdValue != null && healthMetric.getValue() > thresholdValue) {
-
-            // Check if a similar notification was sent recently (within 24 hours)
             boolean notificationExists = notificationRepository.existsSimilarNotification(
-                    user.getId(), healthMetric.getMetricType(), now.minusHours(24));
+                    user.getId(), healthMetric.getMetricType(), now.minusHours(24)
+            );
 
             if (!notificationExists) {
                 Notification notification = new Notification();
                 notification.setMessage(buildNotificationMessage(healthMetric, thresholdValue));
                 notification.setType("HealthMetricAlert");
+                notification.setMetricType(healthMetric.getMetricType());  // Set the metricType
                 notification.setTimestamp(now);
                 notification.setUser(user);
 
-                // Save notification and log it
-                notificationRepository.save(notification);
-                logNotification(notification);
+                // Save the notification
+                Notification savedNotification = notificationRepository.save(notification);
+                logNotification(savedNotification); // Add logging to ensure it's saved
             }
         }
     }
+
+
 
     // Method to generate custom notification message based on the metric type and value
     private String buildNotificationMessage(HealthMetric healthMetric, Double threshold) {

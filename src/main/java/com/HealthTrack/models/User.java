@@ -43,6 +43,9 @@ public class User {
     @JsonIgnore
     private List<Appointment> appointments;  // List of appointments managed by the user
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Notification> notifications;
+
 
 
 

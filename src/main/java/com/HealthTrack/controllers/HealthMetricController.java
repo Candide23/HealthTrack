@@ -3,6 +3,7 @@ package com.HealthTrack.controllers;
 
 import com.HealthTrack.dtos.HealthMetricDto;
 import com.HealthTrack.services.HealthMetricService;
+import com.HealthTrack.services.NotificationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,12 @@ public class HealthMetricController {
 
     private HealthMetricService healthMetricService;
 
+
     @PostMapping
     ResponseEntity<HealthMetricDto> createHealthMetrics(@RequestBody HealthMetricDto healthMetricDto){
 
         HealthMetricDto createdHealthMetrics = healthMetricService.createHealthMetric(healthMetricDto);
+
 
         return new ResponseEntity<>(createdHealthMetrics, HttpStatus.CREATED);
 

@@ -5,8 +5,10 @@ import com.HealthTrack.mapper.HealthMetricMapper;
 import com.HealthTrack.models.HealthMetric;
 import com.HealthTrack.models.User;
 import com.HealthTrack.repositories.HealthMetricRepository;
+import com.HealthTrack.repositories.NotificationRepository;
 import com.HealthTrack.repositories.UserRepository;
 import com.HealthTrack.services.HealthMetricService;
+import com.HealthTrack.services.NotificationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +23,19 @@ public class HealthMetricServiceImpl implements HealthMetricService {
 
     private UserRepository userRepository;
 
+    private NotificationService notificationService;
+
     @Override
     public HealthMetricDto createHealthMetric(HealthMetricDto healthMetricDto) {
 
         User user = userRepository.findById(healthMetricDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));;
 
-
         HealthMetric healthMetric = HealthMetricMapper.mapToHealthMetric(healthMetricDto, user);
         HealthMetric saveHealthMetric = healthMetricRepository.save(healthMetric);
+
+        // Step 3: Check if the health metric exceeds abnormal values and notify
+        notificationService.sendAbnormalHealthMetricNotification(saveHealthMetric);
+
         return HealthMetricMapper.mapToHealthMetricDto(saveHealthMetric);
     }
 

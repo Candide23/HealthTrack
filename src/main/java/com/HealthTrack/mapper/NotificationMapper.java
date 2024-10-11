@@ -10,6 +10,7 @@ public class NotificationMapper {
         return new NotificationDto(
                 notification.getId(),
                 notification.getMessage(),
+                notification.getMetricType(),
                 notification.getType(),
                 notification.isRead(),
                 notification.getTimestamp(),
@@ -21,6 +22,7 @@ public class NotificationMapper {
         return new Notification(
                 notificationDto.getId(),
                 notificationDto.getMessage(),
+                notificationDto.getMetricType(),
                 notificationDto.getType(),
                 notificationDto.isRead(),
                 notificationDto.getTimestamp(),
