@@ -100,4 +100,38 @@ public class NotificationServiceImpl implements NotificationService {
         notificationRepository.save(notification);
 
     }
+
+    @Override
+    public NotificationDto createNotification(NotificationDto notificationDto) {
+        User user = userRepository.findById(notificationDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Notification notification = NotificationMapper.mapToNotification(notificationDto, user);
+        Notification savedNotification = notificationRepository.save(notification);
+        return NotificationMapper.mapToNotificationDto(savedNotification);
+    }
+
+    @Override
+    public NotificationDto updateNotification(Long notificationId, NotificationDto notificationDto) {
+        Notification existingNotification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
+
+        existingNotification.setMessage(notificationDto.getMessage());
+        existingNotification.setMetricType(notificationDto.getMetricType());
+        existingNotification.setType(notificationDto.getType());
+        existingNotification.setRead(notificationDto.isRead());
+        existingNotification.setTimestamp(notificationDto.getTimestamp());
+
+        Notification updatedNotification = notificationRepository.save(existingNotification);
+        return NotificationMapper.mapToNotificationDto(updatedNotification);
+    }
+
+    @Override
+    public void deleteNotification(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
+        notificationRepository.delete(notification);
+    }
+
+
 }
