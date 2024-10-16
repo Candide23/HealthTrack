@@ -11,9 +11,7 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository <Notification, Long> {
 
-
     List<Notification> findByUserId(Long userId);
-
     // Custom query to find similar notifications based on userId, metricType, and timestamp
     @Query("SELECT CASE WHEN COUNT(n) > 0 THEN true ELSE false END FROM Notification n " +
             "WHERE n.user.id = :userId AND n.metricType = :metricType AND n.timestamp > :timestamp")

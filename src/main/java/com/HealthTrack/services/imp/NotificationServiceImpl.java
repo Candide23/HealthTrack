@@ -66,8 +66,6 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
-
-
     // Method to generate custom notification message based on the metric type and value
     private String buildNotificationMessage(HealthMetric healthMetric, Double threshold) {
         return String.format(
@@ -83,7 +81,6 @@ public class NotificationServiceImpl implements NotificationService {
         // Example: Log the notification for auditing purposes or trigger further actions
         System.out.println("Notification sent: " + notification.getMessage());
     }
-
 
     @Override
     public List<NotificationDto> getUserNotifications(Long userId) {
