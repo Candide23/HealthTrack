@@ -35,7 +35,7 @@ public class HealthMetricServiceTest {
     @Test
     public void testCreateHealthMetric() {
         HealthMetricDto healthMetricDto = new HealthMetricDto(null, "Weight", 75.5, LocalDateTime.now(), 1L);
-        User user = new User(1L, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null);
+        User user = new User(1L, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null, null);
         HealthMetric healthMetric = HealthMetricMapper.mapToHealthMetric(healthMetricDto, user);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));

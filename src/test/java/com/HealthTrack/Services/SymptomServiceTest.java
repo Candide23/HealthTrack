@@ -36,7 +36,7 @@ public class SymptomServiceTest {
     @Test
     public void testCreateSymptom() {
         SymptomDto symptomDto = new SymptomDto(null, "Headache", 5, "Mild headache", LocalDateTime.now(), 1L);
-        User user = new User(1L, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null);
+        User user = new User(1L, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null, null);
         Symptom symptom = SymptomMapper.mapToSymptom(symptomDto, user);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -63,7 +63,7 @@ public class SymptomServiceTest {
     public void testFindAllSymptomByUserId() {
         // Create a user and a list of symptoms
         Long userId = 1L;
-        User user = new User(userId, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null);
+        User user = new User(userId, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null, null);
         List<Symptom> symptoms = Arrays.asList(
                 new Symptom(1L, "Headache", 5, "Mild headache", LocalDateTime.now(), user),
                 new Symptom(2L, "Fever", 7, "High fever", LocalDateTime.now(), user)

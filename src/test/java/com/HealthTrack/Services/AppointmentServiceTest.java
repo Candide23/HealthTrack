@@ -38,7 +38,7 @@ public class AppointmentServiceTest {
     @Test
     public void testCreateAppointment() {
 
-        User user = new User(1L, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null);
+        User user = new User(1L, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null, null);
         AppointmentDto appointmentDto = new AppointmentDto(null, "Dr. Smith", "City Clinic", LocalDateTime.now(), "Routine checkup", 1L);
         Appointment appointment = AppointmentMapper.mapToAppointment(appointmentDto, user);
 

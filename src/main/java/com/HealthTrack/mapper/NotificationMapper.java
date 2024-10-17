@@ -14,7 +14,7 @@ public class NotificationMapper {
                 notification.getType(),
                 notification.isRead(),
                 notification.getTimestamp(),
-                notification.getUser().getId()
+                notification.getUser() != null ? notification.getUser().getId() : null
         );
     }
 

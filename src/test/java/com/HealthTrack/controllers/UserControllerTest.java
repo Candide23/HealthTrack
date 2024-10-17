@@ -36,8 +36,8 @@ public class UserControllerTest {
    @Test
     public void testCreateUser() throws Exception{
 
-       UserDto userDto = new UserDto(null, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
-       UserDto createdUserDto = new UserDto(null, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
+       UserDto userDto = new UserDto(null, "cham","mbk","cham@email.com","123-456-7890",null, null,null, null);
+       UserDto createdUserDto = new UserDto(null, "cham","mbk","cham@email.com","123-456-7890",null, null,null, null);
 
        when(userService.createUser(any(UserDto.class))).thenReturn(createdUserDto);
 
@@ -57,7 +57,7 @@ public class UserControllerTest {
    @Test
    public void testFindUserById() throws Exception{
 
-      UserDto userDto = new UserDto(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
+      UserDto userDto = new UserDto(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null, null);
 
       when(userService.findUserById(1L)).thenReturn(userDto);
 
@@ -75,8 +75,8 @@ public class UserControllerTest {
    public void testFindAllUsers() throws Exception{
 
       List<UserDto> users = Arrays.asList(
-              new UserDto(1L, "cham", "mbk", "cham@email.com", "123-456-7890", null, null, null),
-              new UserDto(2L, "jane", "password", "jane@email.com", "123-555-7890", null, null, null)
+              new UserDto(1L, "cham", "mbk", "cham@email.com", "123-456-7890", null, null, null, null),
+              new UserDto(2L, "jane", "password", "jane@email.com", "123-555-7890", null, null, null, null)
       );
 
       when(userService.findAllUser()).thenReturn(users);
@@ -91,7 +91,7 @@ public class UserControllerTest {
 
    @Test
    public void testUpdatedUser() throws Exception{
-      UserDto userDto = new UserDto(1L, "chama","mbka","chama@email.com","987-654-3210",null, null,null);
+      UserDto userDto = new UserDto(1L, "chama","mbka","chama@email.com","987-654-3210",null, null,null, null);
 
       when(userService.updateUser(eq(1L), any(UserDto.class))).thenReturn(userDto);
 

@@ -32,7 +32,7 @@ public class UserServiceTest {
     @Test
     public void testCreateUser() {
 
-        UserDto userDto = new UserDto(null, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
+        UserDto userDto = new UserDto(null, "cham","mbk","cham@email.com","123-456-7890",null, null,null, null);
         User user = UserMapper.mapToUser(userDto);
 
         when(userRepository.save(any(User.class))).thenReturn(user);
@@ -46,7 +46,7 @@ public class UserServiceTest {
     @Test
     public void testFindUserById() {
 
-        User user = new User(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
+        User user = new User(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null, null);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
@@ -61,8 +61,8 @@ public class UserServiceTest {
 
     @Test
     public void findAllUser(){
-        User user1 = new User(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
-        User user2 = new User(2L, "jane_doe", "password456", "jane.doe@example.com", "987-654-3210", null, null, null);
+        User user1 = new User(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null, null);
+        User user2 = new User(2L, "jane_doe", "password456", "jane.doe@example.com", "987-654-3210", null, null, null, null);
         List<User> users = Arrays.asList(user1,user2);
 
         when(userRepository.findAll()).thenReturn(users);
@@ -80,8 +80,8 @@ public class UserServiceTest {
     @Test
     public void testUpdateUser(){
 
-        User user = new User(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
-        UserDto userDto = new UserDto(1L, "chama", "mbka", "cham@email.com", "987-654-3210", null, null, null);
+        User user = new User(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null, null);
+        UserDto userDto = new UserDto(1L, "chama", "mbka", "cham@email.com", "987-654-3210", null, null, null, null);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
@@ -97,7 +97,7 @@ public class UserServiceTest {
     @Test
     public void testDeleteUser(){
 
-        User user = new User(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null);
+        User user = new User(1L, "cham","mbk","cham@email.com","123-456-7890",null, null,null, null);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
        userService.deleteUser(1L);

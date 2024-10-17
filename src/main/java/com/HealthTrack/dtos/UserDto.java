@@ -2,6 +2,7 @@ package com.HealthTrack.dtos;
 
 import com.HealthTrack.models.Appointment;
 import com.HealthTrack.models.HealthMetric;
+import com.HealthTrack.models.Notification;
 import com.HealthTrack.models.Symptom;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -31,4 +32,5 @@ public class UserDto {
     private List<Symptom> symptoms;
     private List<HealthMetric> healthMetrics;
     private List<Appointment> appointments;
+    private List<Notification> notifications;
 }

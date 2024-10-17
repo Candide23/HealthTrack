@@ -30,7 +30,8 @@ public class UserMapper {
                 user.getPhoneNumber(),
                 user.getSymptoms(),
                 user.getHealthMetrics(),
-                user.getAppointments()
+                user.getAppointments(),
+                user.getNotifications()
         );
     }
 
@@ -46,6 +47,7 @@ public class UserMapper {
         user.setSymptoms(userDto.getSymptoms());
         user.setHealthMetrics(userDto.getHealthMetrics());
         user.setAppointments(userDto.getAppointments());
+        user.setNotifications(userDto.getNotifications());
         return user;
 
     }
