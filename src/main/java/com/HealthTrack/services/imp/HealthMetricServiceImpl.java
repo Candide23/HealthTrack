@@ -33,7 +33,6 @@ public class HealthMetricServiceImpl implements HealthMetricService {
         HealthMetric healthMetric = HealthMetricMapper.mapToHealthMetric(healthMetricDto, user);
         HealthMetric saveHealthMetric = healthMetricRepository.save(healthMetric);
 
-        // Step 3: Check if the health metric exceeds abnormal values and notify
         notificationService.sendAbnormalHealthMetricNotification(saveHealthMetric);
 
         return HealthMetricMapper.mapToHealthMetricDto(saveHealthMetric);
