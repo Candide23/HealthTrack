@@ -23,7 +23,6 @@ public class SymptomServiceImpl implements SymptomService {
 
     private UserRepository userRepository;
 
-
     @Override
     public SymptomDto createSymptom(SymptomDto symptomDto) {
         User user = userRepository.findById(symptomDto.getUserId())
