@@ -2,6 +2,8 @@
 The app ensures that each user can only view their own data by filtering requests based on their userId.
 
 # HealthTrack 🏥 - Personal Health Tracker
+<img width="1232" alt="Screenshot 2024-12-03 at 8 33 27 AM" src="https://github.com/user-attachments/assets/ba0af29a-6c73-4769-bc53-77183199cb7f">
+
 ### HealthTrack helps users log health metrics (weight, blood pressure), track symptoms, and manage medical appointments. The app provides a dashboard for visualizing health trends over time.
 
 ## Features
