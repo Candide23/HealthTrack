@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SymptomAPI } from '../../services/api';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 const Symptom = () => {
   const symptomOptions = [
@@ -8,7 +9,7 @@ const Symptom = () => {
     { label: 'Fatigue', value: 'Fatigue' },
     { label: 'Chest Pain', value: 'Chest Pain' },
     { label: 'Fever', value: 'Fever' },
-    { label: 'Cough', value: 'Cough' }
+    { label: 'Cough', value: 'Cough' },
   ];
 
   const [symptoms, setSymptoms] = useState([]);
@@ -16,12 +17,19 @@ const Symptom = () => {
   const [severity, setSeverity] = useState(1);
   const [description, setDescription] = useState('');
   const [editingId, setEditingId] = useState(null);
+  const navigate = useNavigate();
 
-  const userId = localStorage.getItem('userId');  
+  // Fetch user from localStorage
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user.id;
 
   useEffect(() => {
-    fetchSymptoms();
-  }, []);
+    if (!user || !localStorage.getItem('token'))  {
+      navigate('/login'); // Redirect if not logged in
+    } else {
+      fetchSymptoms(); // Fetch symptoms if logged in
+    }
+  }, [navigate, user]);
 
   const fetchSymptoms = async () => {
     try {
@@ -29,18 +37,21 @@ const Symptom = () => {
       setSymptoms(response.data);
     } catch (error) {
       console.error('Error fetching symptoms:', error);
+      if (error.response?.status === 401) {
+        navigate('/login'); // Redirect to login if unauthorized
+      }
     }
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const timestamp = dayjs().toISOString();
+
     const symptomData = {
       symptomType,
       severity,
       description,
-      timestamp,
-      userId: userId  
+      timestamp: dayjs().toISOString(),
+      userId: user.id, // Ensure userId is included in the payload
     };
 
     try {
@@ -49,10 +60,10 @@ const Symptom = () => {
       } else {
         await SymptomAPI.create(symptomData);
       }
-      fetchSymptoms();
+      fetchSymptoms(); // Refresh the symptoms list
       resetForm();
     } catch (error) {
-      console.error('Error saving symptom:', error.response ? error.response.data : error.message);
+      console.error('Error saving symptom:', error.response?.data || error.message);
     }
   };
 
@@ -63,7 +74,14 @@ const Symptom = () => {
     setEditingId(null);
   };
 
- 
+  const handleDelete = async (id) => {
+    try {
+      await SymptomAPI.delete(id);
+      fetchSymptoms();
+    } catch (error) {
+      console.error('Error deleting symptom:', error.response?.data || error.message);
+    }
+  };
 
   return (
     <div>
@@ -110,16 +128,15 @@ const Symptom = () => {
         </button>
       </form>
 
-      {/* Adjusted table for a smaller and more compact design */}
       <div className="table-responsive">
         <table className="table table-striped table-sm">
           <thead>
             <tr>
-              <th style={{ width: '20%' }}>Type</th>
-              <th style={{ width: '10%' }}>Severity</th>
-              <th style={{ width: '30%' }}>Description</th>
-              <th style={{ width: '20%' }}>Timestamp</th>
-              <th style={{ width: '10%' }}>Actions</th>
+              <th>Type</th>
+              <th>Severity</th>
+              <th>Description</th>
+              <th>Timestamp</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -130,24 +147,23 @@ const Symptom = () => {
                 <td>{symptom.description}</td>
                 <td>{dayjs(symptom.timestamp).format('YYYY-MM-DD HH:mm')}</td>
                 <td>
-                  {/* Flexbox to make buttons more compact */}
-                    <button
-                      className="btn btn-warning btn-sm mr-2"
-                      onClick={() => {
-                        setSymptomType(symptom.symptomType);
-                        setSeverity(symptom.severity);
-                        setDescription(symptom.description);
-                        setEditingId(symptom.id);
-                      }}
-                    >
-                      <i className="fas fa-edit"></i> Edit
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => SymptomAPI.delete(symptom.id).then(fetchSymptoms)}
-                    >
-                      <i className="fas fa-trash-alt"></i> Delete
-                    </button>
+                  <button
+                    className="btn btn-warning btn-sm mr-2"
+                    onClick={() => {
+                      setSymptomType(symptom.symptomType);
+                      setSeverity(symptom.severity);
+                      setDescription(symptom.description);
+                      setEditingId(symptom.id);
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(symptom.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -159,6 +175,12 @@ const Symptom = () => {
 };
 
 export default Symptom;
+
+
+   
+
+
+
 
 
 

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/notifications")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class NotificationController {
 
     private  NotificationService notificationService;

@@ -6,8 +6,13 @@ import com.HealthTrack.models.User;
 import com.HealthTrack.repositories.UserRepository;
 import com.HealthTrack.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +22,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Override
     public UserDto createUser(UserDto userDto) {
         User newUser = UserMapper.mapToUser(userDto);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword())); // Encrypt password
 
         if (newUser.getSymptoms() == null) {
             newUser.setSymptoms(new ArrayList<>());
@@ -32,72 +40,45 @@ public class UserServiceImpl implements UserService {
             newUser.setAppointments(new ArrayList<>());
         }
 
-        User saveUser = userRepository.save(newUser);
-        return UserMapper.mapToUserTdo(saveUser);
+        User savedUser = userRepository.save(newUser);
+        return UserMapper.mapToUserTdo(savedUser);
     }
 
     @Override
     public UserDto findUserById(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (user.getSymptoms() == null) {
-            user.setSymptoms(new ArrayList<>());
-        }
-        if (user.getHealthMetrics() == null) {
-            user.setHealthMetrics(new ArrayList<>());
-        }
-        if (user.getAppointments() == null) {
-            user.setAppointments(new ArrayList<>());
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         return UserMapper.mapToUserTdo(user);
     }
 
     @Override
     public List<UserDto> findAllUser() {
-        List<User> users = userRepository.findAll();
-
-        return users.stream().map(user -> {
-            if (user.getSymptoms() == null) {
-                user.setSymptoms(new ArrayList<>());
-            }
-            if (user.getHealthMetrics() == null) {
-                user.setHealthMetrics(new ArrayList<>());
-            }
-            if (user.getAppointments() == null) {
-                user.setAppointments(new ArrayList<>());
-            }
-            return UserMapper.mapToUserTdo(user);
-        }).collect(Collectors.toList());
+        return userRepository.findAll().stream()
+                .map(UserMapper::mapToUserTdo)
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserDto updateUser(Long userId, UserDto userDto) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword())); // Encrypt updated password
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
 
-        if (user.getSymptoms() == null) {
-            user.setSymptoms(new ArrayList<>());
-        }
-        if (user.getHealthMetrics() == null) {
-            user.setHealthMetrics(new ArrayList<>());
-        }
-        if (user.getAppointments() == null) {
-            user.setAppointments(new ArrayList<>());
-        }
-
-        User updatableUser = userRepository.save(user);
-        return UserMapper.mapToUserTdo(updatableUser);
+        User updatedUser = userRepository.save(user);
+        return UserMapper.mapToUserTdo(updatedUser);
     }
 
     @Override
     public void deleteUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-
+        if (!userRepository.existsById(userId)) {
+            throw new RuntimeException("User not found");
+        }
         userRepository.deleteById(userId);
     }
 }
+

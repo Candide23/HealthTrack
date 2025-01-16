@@ -10,7 +10,8 @@ const Appointment = () => {
   const [reasonForVisit, setReasonForVisit] = useState('');
   const [editingId, setEditingId] = useState(null);
 
-  const userId = localStorage.getItem('userId');  // Fetch the logged-in user ID
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user?.id;
 
   useEffect(() => {
     fetchAppointments();
@@ -32,7 +33,7 @@ const Appointment = () => {
       location,
       appointmentDate,
       reasonForVisit,
-      userId
+      userId,
     };
 
     try {
@@ -44,7 +45,7 @@ const Appointment = () => {
       fetchAppointments();
       resetForm();
     } catch (error) {
-      console.error('Error saving appointment:', error.response ? error.response.data : error.message);
+      console.error('Error saving appointment:', error.response?.data || error.message);
     }
   };
 
@@ -154,8 +155,8 @@ const Appointment = () => {
     </div>
   );
 };
-
 export default Appointment;
+
 
 
 

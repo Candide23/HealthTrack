@@ -3,26 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import HealthMetric from '../HealthMetric/HealthMetric';
 import Symptom from '../Symptom/Symptom';
 import Appointment from '../Appointment/Appointment';
-import Notification from '../Notification/Notification';  // Import Notification component
-import './Dashboard.css'; 
+import Notification from '../Notification/Notification';
+import './Dashboard.css';
 
 const Dashboard = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-  const notificationRef = useRef(null);  // Reference to Notification component
-
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const notificationRef = useRef(null); // Reference to Notification component
   const navigate = useNavigate();
 
   useEffect(() => {
-    const updatedUser = JSON.parse(localStorage.getItem('user'));
-    if (!updatedUser) {
+    const savedUser = JSON.parse(localStorage.getItem('user'));
+    if (!savedUser) {
       navigate('/login');
+    } else {
+      setUser(savedUser);
     }
-    setUser(updatedUser);
+    setLoading(false);
   }, [navigate]);
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/');
+    navigate('/login');
   };
 
   const goToProfile = () => {
@@ -31,9 +33,27 @@ const Dashboard = () => {
 
   const triggerNotificationRefresh = () => {
     if (notificationRef.current) {
-      notificationRef.current();  // Trigger notification refresh
+      notificationRef.current(); // Trigger notification refresh
     }
   };
+
+  if (loading) {
+    return <div className="text-center">Loading user data...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="text-center">
+        <p>User data not found. Please log in again.</p>
+        <button
+          className="btn btn-primary"
+          onClick={() => navigate('/login')}
+        >
+          Go to Login
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-5">
@@ -43,15 +63,21 @@ const Dashboard = () => {
         <div className="col-md-8">
           <div className="card mb-4 shadow-sm">
             <div className="card-body text-center">
-              <h4>Welcome, {user ? user.username : 'User'}</h4>
-              <p>Email: {user ? user.email : ''}</p>
-              <p>Phone Number: {user ? user.phoneNumber : ''}</p>
+              <h4>Welcome, {user.username}</h4>
+              <p>Email: {user.email}</p>
+              <p>Phone Number: {user.phoneNumber}</p>
 
               <div className="btn-group" role="group">
-                <button className="btn btn-danger btn-sm" onClick={handleLogout}>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={handleLogout}
+                >
                   Logout
                 </button>
-                <button className="btn btn-primary btn-sm" onClick={goToProfile}>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={goToProfile}
+                >
                   Manage Profile
                 </button>
               </div>
@@ -68,12 +94,17 @@ const Dashboard = () => {
               <h5 className="card-title mb-0">Notifications</h5>
             </div>
             <div className="card-body p-3">
-              <Notification fetchNewNotifications={(fetchNotifications) => (notificationRef.current = fetchNotifications)} />
+              <Notification
+                fetchNewNotifications={(fetchNotifications) =>
+                  (notificationRef.current = fetchNotifications)
+                }
+              />
             </div>
           </div>
         </div>
       </div>
 
+      {/* Health Metrics, Symptoms, and Appointments */}
       <div className="row">
         <div className="col-md-4">
           <div className="card mb-4 shadow-sm">
@@ -81,7 +112,9 @@ const Dashboard = () => {
               <h5 className="card-title mb-0">Health Metrics</h5>
             </div>
             <div className="card-body p-3">
-              <HealthMetric triggerNotificationRefresh={triggerNotificationRefresh} />
+              <HealthMetric
+                triggerNotificationRefresh={triggerNotificationRefresh}
+              />
             </div>
           </div>
         </div>
@@ -113,6 +146,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 
 
 

@@ -8,25 +8,37 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const userId = JSON.parse(localStorage.getItem('user')).id;
+  const userId = JSON.parse(localStorage.getItem('user'))?.id;
 
   useEffect(() => {
+    if (!userId) {
+      setError('User ID not found. Please log in again.');
+      localStorage.clear();
+      navigate('/login');
+      return;
+    }
     fetchUserData();
-  }, []);
+  }, [navigate, userId]);
 
   const fetchUserData = async () => {
     try {
+      console.log('Fetching user data for ID:', userId);
       const response = await axios.get(`http://localhost:8080/api/users/${userId}`);
+      console.log('User data fetched:', response.data);
       setUser(response.data);
       setUsername(response.data.username);
       setEmail(response.data.email);
-      setPhoneNumber(response.data.phoneNumber);
-      setPassword(response.data.password);
+      setPhoneNumber(response.data.phoneNumber) ;
+      setPassword(''); // Do not prefill password
+      setError('');
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error fetching user data:', error.response?.data || error.message);
       setError('Failed to load user data.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,36 +49,46 @@ const Profile = () => {
         username,
         email,
         phoneNumber,
-        password
+        password: password || undefined, // Do not send password if empty
       };
+
+      console.log('Updating user with data:', updatedUser);
       await axios.put(`http://localhost:8080/api/users/${userId}`, updatedUser);
 
       // Update localStorage with the new user data
       localStorage.setItem('user', JSON.stringify({ id: userId, ...updatedUser }));
 
-      // Manually trigger a 'storage' event to notify other components like Dashboard
+      // Trigger storage event for updates in other components
       window.dispatchEvent(new Event('storage'));
 
-      setError('');
       alert('Profile updated successfully.');
+      setError('');
       navigate('/dashboard');
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error('Error updating profile:', error.response?.data || error.message);
       setError('Failed to update profile.');
     }
   };
 
   const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
+      return;
+    }
     try {
+      console.log('Deleting user with ID:', userId);
       await axios.delete(`http://localhost:8080/api/users/${userId}`);
       alert('User deleted successfully.');
       localStorage.removeItem('user');
       navigate('/register');
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting user:', error.response?.data || error.message);
       setError('Failed to delete profile.');
     }
   };
+
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
 
   return (
     <div className="container mt-5">
@@ -105,34 +127,40 @@ const Profile = () => {
             />
           </div>
           <div className="form-group mb-3">
-            <label>Password</label>
+            <label>Password (leave blank to keep the current password)</label>
             <input
               type="password"
               className="form-control"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
+              placeholder="Enter new password (optional)"
             />
           </div>
-          <button type="submit" className="btn btn-primary btn-sm">
-            Update Profile
-          </button>
-          <button
-            type="button"
-            className="btn btn-danger btn-sm"
-            onClick={handleDelete}
-          >
-            Delete Profile
-          </button>
+          <div className="d-flex justify-content-between">
+            <button type="submit" className="btn btn-primary">
+              Update Profile
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={handleDelete}
+            >
+              Delete Profile
+            </button>
+          </div>
         </form>
       ) : (
-        <p>Loading profile...</p>
+        <p>User not found.</p>
       )}
     </div>
   );
 };
 
 export default Profile;
+
+
+
+
 
 
 

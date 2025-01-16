@@ -21,7 +21,8 @@ const HealthMetric = ({ triggerNotificationRefresh }) => {
   const [value, setValue] = useState('');
   const [editingId, setEditingId] = useState(null);
 
-  const userId = localStorage.getItem('userId'); 
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user?.id;
 
   useEffect(() => {
     fetchMetrics();
@@ -38,18 +39,12 @@ const HealthMetric = ({ triggerNotificationRefresh }) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const timestamp = dayjs().toISOString();
-
-    if (!userId) {
-      console.error('User ID not found in localStorage.');
-      return;
-    }
 
     const metricData = {
       metricType,
-      value: parseFloat(value), 
-      timestamp,
-      userId 
+      value: parseFloat(value),
+      timestamp: dayjs().toISOString(),
+      userId,
     };
 
     try {
@@ -60,9 +55,9 @@ const HealthMetric = ({ triggerNotificationRefresh }) => {
       }
       fetchMetrics();
       resetForm();
-      triggerNotificationRefresh();  // Trigger notification update after adding the metric
+      triggerNotificationRefresh();
     } catch (error) {
-      console.error('Error saving metric:', error.response ? error.response.data : error.message);
+      console.error('Error saving metric:', error.response?.data || error.message);
     }
   };
 
@@ -129,13 +124,13 @@ const HealthMetric = ({ triggerNotificationRefresh }) => {
                     setEditingId(metric.id);
                   }}
                 >
-                  <i className="fas fa-edit"></i> Edit
+                  Edit
                 </button>
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => HealthMetricAPI.delete(metric.id).then(fetchMetrics)}
                 >
-                  <i className="fas fa-trash-alt"></i> Delete
+                  Delete
                 </button>
               </td>
             </tr>
@@ -147,6 +142,8 @@ const HealthMetric = ({ triggerNotificationRefresh }) => {
 };
 
 export default HealthMetric;
+
+
 
 
 
