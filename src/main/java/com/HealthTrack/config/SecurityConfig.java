@@ -4,6 +4,7 @@ import com.HealthTrack.services.imp.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -40,6 +41,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**", "/api/public/**", "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/{id}").authenticated()
                         .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults()) // Enable CORS
