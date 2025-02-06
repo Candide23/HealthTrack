@@ -22,7 +22,6 @@ public class UserController {
     public ResponseEntity<UserDto> createUsers(@Valid @RequestBody UserDto userDto){
 
         UserDto createdUser = userService.createUser(userDto);
-
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 
     }
@@ -33,35 +32,25 @@ public class UserController {
     public ResponseEntity<UserDto> findUsersById(@PathVariable("id") Long userId){
 
         UserDto foundUserById = userService.findUserById(userId);
-
         return ResponseEntity.ok(foundUserById);
 
     }
     @GetMapping
     public ResponseEntity<List<UserDto>> findAllUsers(){
-
         List<UserDto> userDto = userService.findAllUser();
-
         return ResponseEntity.ok(userDto);
-
-
     }
 
     @PutMapping("{id}")
     public ResponseEntity<UserDto> updatedUsers( @PathVariable("id") Long userId, @RequestBody UserDto userDto){
-
         UserDto updatedUser = userService.updateUser(userId, userDto);
-
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<String> deletedUsers(@PathVariable("id") Long userId){
-
       userService.deleteUser(userId);
-
         return  ResponseEntity.ok("User deleted Successfully");
-
 
     }
 

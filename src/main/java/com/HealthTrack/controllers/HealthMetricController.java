@@ -22,10 +22,7 @@ public class HealthMetricController {
 
     @PostMapping
     ResponseEntity<HealthMetricDto> createHealthMetrics(@RequestBody HealthMetricDto healthMetricDto){
-
         HealthMetricDto createdHealthMetrics = healthMetricService.createHealthMetric(healthMetricDto);
-
-
         return new ResponseEntity<>(createdHealthMetrics, HttpStatus.CREATED);
 
     }
@@ -51,9 +48,7 @@ public class HealthMetricController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<String> deletedHealthMetrics(@PathVariable("id") Long healthMetricId){
-
          healthMetricService.deleteHealthMetric(healthMetricId);
-
         return  ResponseEntity.ok("Deleted Metric Successfully");
     }
 }

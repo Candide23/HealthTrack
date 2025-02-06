@@ -18,14 +18,11 @@ public class SymptomController {
 
     private SymptomService symptomService;
 
-
-
     @PostMapping
     public ResponseEntity<SymptomDto> createSymptom(@RequestBody SymptomDto symptomDto) {
         SymptomDto createdSymptom = symptomService.createSymptom(symptomDto);
         return new ResponseEntity<>(createdSymptom, HttpStatus.CREATED);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<SymptomDto> getSymptomById(@PathVariable("id") Long idSymptom) {
@@ -39,8 +36,6 @@ public class SymptomController {
         return new ResponseEntity<>(symptoms, HttpStatus.OK);
     }
 
-
-    // UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<SymptomDto> updateSymptom(@PathVariable("id") Long idSymptom, @RequestBody SymptomDto symptomDto) {
         SymptomDto updatedSymptom = symptomService.updateSymptom(idSymptom, symptomDto);
@@ -49,9 +44,7 @@ public class SymptomController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<String> deletedHealthMetrics(@PathVariable("id") Long idSymptom){
-
         symptomService.deleteSymptom(idSymptom);
-
         return  ResponseEntity.ok("Deleted Symptom Successfully");
     }
 }

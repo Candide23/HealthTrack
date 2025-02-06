@@ -18,23 +18,17 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class HealthMetricServiceImpl implements HealthMetricService {
-
     private HealthMetricRepository healthMetricRepository;
-
     private UserRepository userRepository;
-
     private NotificationService notificationService;
 
     @Override
     public HealthMetricDto createHealthMetric(HealthMetricDto healthMetricDto) {
 
         User user = userRepository.findById(healthMetricDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));;
-
         HealthMetric healthMetric = HealthMetricMapper.mapToHealthMetric(healthMetricDto, user);
         HealthMetric saveHealthMetric = healthMetricRepository.save(healthMetric);
-
         notificationService.sendAbnormalHealthMetricNotification(saveHealthMetric);
-
         return HealthMetricMapper.mapToHealthMetricDto(saveHealthMetric);
     }
 
@@ -51,7 +45,6 @@ public class HealthMetricServiceImpl implements HealthMetricService {
     public List<HealthMetricDto> findAllHealthMetricsByUserId(Long userId) {
 
         List<HealthMetric> healthMetrics = healthMetricRepository.findByUserId(userId);
-
         return healthMetrics.stream()
                 .map(HealthMetricMapper::mapToHealthMetricDto)
                 .collect(Collectors.toList());
@@ -62,12 +55,9 @@ public class HealthMetricServiceImpl implements HealthMetricService {
     public HealthMetricDto updateHealthMetric(Long healthMetricId, HealthMetricDto healthMetricDto) {
 
         HealthMetric healthMetric = healthMetricRepository.findById(healthMetricId).orElseThrow(() -> new RuntimeException("healthMetricId not found"));
-
-        //healthMetric.setMetricType(healthMetric.getMetricType()); error I made
         healthMetric.setMetricType(healthMetricDto.getMetricType());
         healthMetric.setValue(healthMetricDto.getValue());
         healthMetric.setTimestamp(healthMetricDto.getTimestamp());
-
         HealthMetric updatedHealthMetric = healthMetricRepository.save(healthMetric);
         return HealthMetricMapper.mapToHealthMetricDto(updatedHealthMetric);
     }
@@ -77,7 +67,6 @@ public class HealthMetricServiceImpl implements HealthMetricService {
 
         HealthMetric healthMetric = healthMetricRepository.findById(healthMetricId)
                 .orElseThrow(() -> new RuntimeException("healthMetricId not found"));
-
         healthMetricRepository.deleteById(healthMetricId);
 
     }

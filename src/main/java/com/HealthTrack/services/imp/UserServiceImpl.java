@@ -20,10 +20,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -39,7 +37,6 @@ public class UserServiceImpl implements UserService {
         if (newUser.getAppointments() == null) {
             newUser.setAppointments(new ArrayList<>());
         }
-
         User savedUser = userRepository.save(newUser);
         return UserMapper.mapToUserTdo(savedUser);
     }
@@ -48,7 +45,6 @@ public class UserServiceImpl implements UserService {
     public UserDto findUserById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         return UserMapper.mapToUserTdo(user);
     }
 
@@ -63,12 +59,10 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(Long userId, UserDto userDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword())); // Encrypt updated password
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
-
         User updatedUser = userRepository.save(user);
         return UserMapper.mapToUserTdo(updatedUser);
     }

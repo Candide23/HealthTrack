@@ -44,10 +44,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/users/{id}").authenticated()
                         .anyRequest().authenticated()
                 )
-                .cors(Customizer.withDefaults()) // Enable CORS
-
+                .cors(Customizer.withDefaults())
                 .httpBasic(withDefaults());
-
         return http.build();
     }
 
@@ -55,12 +53,12 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true); // Allow credentials (e.g., cookies, authorization headers)
-        config.addAllowedOrigin("http://localhost:3000"); // Allow your front-end origin
-        config.addAllowedHeader("*"); // Allow all headers
-        config.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
-        source.registerCorsConfiguration("/**", config); // Apply CORS configuration to all endpoints
-        return new CorsFilter(source); // Return the CorsFilter bean
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
     private UrlBasedCorsConfigurationSource corsConfigurationSource() {
@@ -73,10 +71,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
-
-
-
 
 
     @Bean

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationRepository notificationRepository;
-
     private UserRepository userRepository;
 
 
@@ -30,20 +29,18 @@ public class NotificationServiceImpl implements NotificationService {
     public void sendAbnormalHealthMetricNotification(HealthMetric healthMetric) {
         User user = healthMetric.getUser();
         LocalDateTime now = LocalDateTime.now();
-
-        // Thresholds for different health metrics
         Map<String, Double> thresholds = new HashMap<>();
-        thresholds.put("Blood Pressure", 140.0);    // Systolic BP > 140 mmHg
-        thresholds.put("Heart Rate", 100.0);        // Heart Rate > 100 bpm (tachycardia)
-        thresholds.put("Blood Sugar", 180.0);       // Blood Sugar > 180 mg/dL (post-meal hyperglycemia)
-        thresholds.put("Cholesterol", 200.0);       // Cholesterol > 200 mg/dL (high cholesterol)
-        thresholds.put("Body Temperature", 38.0);   // Body Temperature > 38°C (fever)
-        thresholds.put("Respiratory Rate", 20.0);   // Respiratory Rate > 20 breaths per minute (tachypnea)
-        thresholds.put("Oxygen Saturation", 90.0);  // Oxygen Saturation < 90% (hypoxemia)
-        thresholds.put("BMI", 30.0);                // BMI > 30 (Obesity)
-        thresholds.put("Weight", 150.0);            // Weight > 150 kg (high weight)
-        thresholds.put("Height", 200.0);            // Height > 200 cm (unusual height)
-        thresholds.put("Blood Pressure Diastolic", 90.0); // Diastolic BP > 90 mmHg
+        thresholds.put("Blood Pressure", 140.0);
+        thresholds.put("Heart Rate", 100.0);
+        thresholds.put("Blood Sugar", 180.0);
+        thresholds.put("Cholesterol", 200.0);
+        thresholds.put("Body Temperature", 38.0);
+        thresholds.put("Respiratory Rate", 20.0);
+        thresholds.put("Oxygen Saturation", 90.0);
+        thresholds.put("BMI", 30.0);
+        thresholds.put("Weight", 150.0);
+        thresholds.put("Height", 200.0);
+        thresholds.put("Blood Pressure Diastolic", 90.0);
 
         Double thresholdValue = thresholds.get(healthMetric.getMetricType());
         if (thresholdValue != null && healthMetric.getValue() > thresholdValue) {
@@ -55,18 +52,15 @@ public class NotificationServiceImpl implements NotificationService {
                 Notification notification = new Notification();
                 notification.setMessage(buildNotificationMessage(healthMetric, thresholdValue));
                 notification.setType("HealthMetricAlert");
-                notification.setMetricType(healthMetric.getMetricType());  // Set the metricType
+                notification.setMetricType(healthMetric.getMetricType());
                 notification.setTimestamp(now);
                 notification.setUser(user);
-
-                // Save the notification
                 Notification savedNotification = notificationRepository.save(notification);
-                logNotification(savedNotification); // Add logging to ensure it's saved
+                logNotification(savedNotification);
             }
         }
     }
 
-    // Method to generate custom notification message based on the metric type and value
     private String buildNotificationMessage(HealthMetric healthMetric, Double threshold) {
         return String.format(
                 "Warning! Your %s is abnormally high: %.2f (Threshold: %.2f). Please consult a healthcare provider.",
@@ -76,10 +70,7 @@ public class NotificationServiceImpl implements NotificationService {
         );
     }
 
-    // Log notification (could be used for auditing or further action)
-    private void logNotification(Notification notification) {
-        // Example: Log the notification for auditing purposes or trigger further actions
-        System.out.println("Notification sent: " + notification.getMessage());
+    private void logNotification(Notification notification) {System.out.println("Notification sent: " + notification.getMessage());
     }
 
     @Override
@@ -102,7 +93,6 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationDto createNotification(NotificationDto notificationDto) {
         User user = userRepository.findById(notificationDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         Notification notification = NotificationMapper.mapToNotification(notificationDto, user);
         Notification savedNotification = notificationRepository.save(notification);
         return NotificationMapper.mapToNotificationDto(savedNotification);
@@ -112,13 +102,11 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationDto updateNotification(Long notificationId, NotificationDto notificationDto) {
         Notification existingNotification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new RuntimeException("Notification not found"));
-
         existingNotification.setMessage(notificationDto.getMessage());
         existingNotification.setMetricType(notificationDto.getMetricType());
         existingNotification.setType(notificationDto.getType());
         existingNotification.setRead(notificationDto.isRead());
         existingNotification.setTimestamp(notificationDto.getTimestamp());
-
         Notification updatedNotification = notificationRepository.save(existingNotification);
         return NotificationMapper.mapToNotificationDto(updatedNotification);
     }

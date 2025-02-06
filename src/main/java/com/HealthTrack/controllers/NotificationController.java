@@ -15,8 +15,6 @@ import java.util.List;
 public class NotificationController {
 
     private  NotificationService notificationService;
-
-    // Get all notifications for a user
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<NotificationDto>> getUserNotifications(@PathVariable Long userId) {
         List<NotificationDto> notifications = notificationService.getUserNotifications(userId);
@@ -24,14 +22,11 @@ public class NotificationController {
         return ResponseEntity.ok(notifications);
     }
 
-    // Mark a notification as read
     @PutMapping("/{notificationId}/read")
     public ResponseEntity<Void> markNotificationAsRead(@PathVariable Long notificationId) {
         notificationService.markNotificationAsRead(notificationId);
         return ResponseEntity.ok().build();
     }
-
-    // Delete a notification
     @DeleteMapping("/{notificationId}")
     public ResponseEntity<Void> deleteNotification(@PathVariable Long notificationId) {
         notificationService.deleteNotification(notificationId);
