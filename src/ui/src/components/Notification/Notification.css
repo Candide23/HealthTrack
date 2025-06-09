@@ -1,4 +1,185 @@
-.unread {
-    background-color: #f8d7da; /* Light red background for unread notifications */
+/* Notification Container */
+.notification-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.notifications-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Unread notification highlight */
+.notification-unread {
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); }
+  50% { box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15); }
+  100% { box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); }
+}
+
+/* Notification type backgrounds */
+.critical-alert {
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+  border-left: 4px solid #e53e3e !important;
+}
+
+.high-severity-alert {
+  background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
+  border-left: 4px solid #dd6b20 !important;
+}
+
+.pattern-alert {
+  background: linear-gradient(135deg, #f0f8ff 0%, #bee3f8 100%);
+  border-left: 4px solid #3182ce !important;
+}
+
+.multiple-alert {
+  background: linear-gradient(135deg, #f7fafc 0%, #cbd5e0 100%);
+  border-left: 4px solid #4a5568 !important;
+}
+
+.deterioration-alert {
+  background: linear-gradient(135deg, #fff5f5 0%, #fbb6ce 100%);
+  border-left: 4px solid #b83280 !important;
+}
+
+.symptom-alert {
+  background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+  border-left: 4px solid #38a169 !important;
+}
+
+.health-alert {
+  background: linear-gradient(135deg, #ebf8ff 0%, #90cdf4 100%);
+  border-left: 4px solid #3182ce !important;
+}
+
+.wellness-tip {
+  background: linear-gradient(135deg, #f0fff4 0%, #9ae6b4 100%);
+  border-left: 4px solid #48bb78 !important;
+}
+
+.general-alert {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-left: 4px solid #6c757d !important;
+}
+
+/* Notification content */
+.notification-icon {
+  font-size: 18px;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+.notification-message {
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+
+.notification-meta {
+  font-size: 12px;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+/* Filter buttons */
+.btn-group .btn {
+  border-radius: 4px !important;
+  margin-right: 2px;
+}
+
+.btn-group .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Badge styles */
+.badge {
+  font-size: 10px;
+  padding: 3px 6px;
+}
+
+.badge-outline-secondary {
+  background: transparent;
+  border: 1px solid #6c757d;
+  color: #6c757d;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .notification-container {
+    max-height: 300px;
   }
-  
+
+  .notifications-list {
+    max-height: 250px;
+  }
+
+  .notification-actions {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .btn-group {
+    flex-wrap: wrap;
+  }
+
+  .btn-group .btn {
+    margin-bottom: 2px;
+  }
+}
+
+/* Scrollbar styling */
+.notification-container::-webkit-scrollbar,
+.notifications-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-container::-webkit-scrollbar-track,
+.notifications-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.notification-container::-webkit-scrollbar-thumb,
+.notifications-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.notification-container::-webkit-scrollbar-thumb:hover,
+.notifications-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Animation for new notifications */
+.notification-new {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Empty state styling */
+.text-center.py-4 {
+  padding: 2rem 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
