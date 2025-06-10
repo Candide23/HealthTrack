@@ -1,5 +1,6 @@
 package com.HealthTrack.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(  "/api/auth/**",
+                        .requestMatchers("/api/auth/**",
                                 "/api/public/**",
                                 "/api/users",
                                 "/api/appointments/**",
@@ -48,8 +49,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/users/{id}").authenticated()
                         .anyRequest().authenticated()
                 )
+                .httpBasic(httpBasic -> httpBasic
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"Unauthorized\"}");
+                        })
+                )
                 .cors(withDefaults());
-        // Removed .httpBasic() to prevent browser popup and auto-login attempts
         return http.build();
     }
 
