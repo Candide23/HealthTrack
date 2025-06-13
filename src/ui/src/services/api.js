@@ -12,7 +12,6 @@ const api = axios.create({
   },
 });
 
-// ✅ FIXED AuthAPI using your existing endpoints
 export const AuthAPI = {
   login: async (username, password) => {
     try {
@@ -66,7 +65,7 @@ export const AuthAPI = {
   }
 };
 
-// ✅ Request interceptor to add auth token
+// Request interceptor to add auth token
 api.interceptors.request.use((config) => {
   // Check if this is an open endpoint that doesn't need authentication
   const isOpenEndpoint = (
@@ -83,7 +82,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// ✅ Response interceptor for error handling
+//Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {

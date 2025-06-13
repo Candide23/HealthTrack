@@ -15,6 +15,8 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      let userId = null;
+
       try {
         // Get user ID from localStorage
         const storedUser = localStorage.getItem('user');
@@ -28,7 +30,7 @@ const Profile = () => {
         }
 
         const userData = JSON.parse(storedUser);
-        const userId = userData?.id;
+        userId = userData?.id;
 
         if (!userId) {
           setError('User ID not found. Please log in again.');
@@ -40,7 +42,6 @@ const Profile = () => {
           return;
         }
 
-        // Check if token exists
         const token = localStorage.getItem('token');
         if (!token) {
           setError('Authentication required. Please log in again.');
@@ -54,7 +55,6 @@ const Profile = () => {
         console.log('Fetching user data for ID:', userId);
         console.log('Token:', token);
 
-        // Fetch user data from API
         const response = await api.get(`/users/${userId}`);
 
         if (response.data) {
@@ -69,10 +69,8 @@ const Profile = () => {
       } catch (error) {
         console.error('Error fetching user data:', error);
 
-        // Handle 403 - might need to use the /users endpoint instead
         if (error.response?.status === 403) {
           try {
-            // Try fetching all users and filter by ID
             const allUsersResponse = await api.get('/users');
             const currentUser = allUsersResponse.data.find(u => u.id === userId);
 
@@ -119,7 +117,6 @@ const Profile = () => {
     setSuccess('');
 
     try {
-      // Get user ID again for the update
       const storedUser = localStorage.getItem('user');
       const userData = JSON.parse(storedUser);
       const userId = userData?.id;
@@ -139,7 +136,6 @@ const Profile = () => {
       const response = await api.put(`/users/${userId}`, updatedUser);
 
       if (response.data) {
-        // Update localStorage with new user data
         const updatedUserData = { id: userId, ...updatedUser };
         if (!updatedUserData.password) {
           delete updatedUserData.password;
@@ -176,7 +172,6 @@ const Profile = () => {
     }
 
     try {
-      // Get user ID for deletion
       const storedUser = localStorage.getItem('user');
       const userData = JSON.parse(storedUser);
       const userId = userData?.id;

@@ -4,7 +4,6 @@ import HealthMetric from '../HealthMetric/HealthMetric';
 import Symptom from '../Symptom/Symptom';
 import Appointment from '../Appointment/Appointment';
 import Notification from '../Notification/Notification';
-import './Dashboard.css';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
