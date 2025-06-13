@@ -49,11 +49,4 @@ public class User {
     private List<Notification> notifications;
 
 
-
-
-
-
-
-
-
 }

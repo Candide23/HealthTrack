@@ -25,9 +25,6 @@ class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-        boolean testMatch = passwordEncoder.matches("password123", user.getPassword());
-        System.out.println("Password test match with 'password123'? " + testMatch);
-
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())

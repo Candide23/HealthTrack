@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -33,22 +32,18 @@ public class SecurityConfig {
     private  final PasswordEncoder passwordEncoder;
 
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**",
-                                "/api/public/**",
-                                "/api/users",
-                                "/api/appointments/**",
-                                "/api/symptoms/**",
-                                "/api/healthMetrics/**",
-                                "/api/notifications/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/public/**", "/api/appointments/**",
+                                "/api/symptoms/**", "/api/healthMetrics/**", "/api/notifications/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/users/{id}").authenticated()
                         .anyRequest().authenticated()
                 )
+
                 .httpBasic(httpBasic -> httpBasic
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -6,6 +6,7 @@ import com.HealthTrack.models.HealthMetric;
 import com.HealthTrack.models.User;
 import com.HealthTrack.repositories.HealthMetricRepository;
 import com.HealthTrack.repositories.UserRepository;
+import com.HealthTrack.services.NotificationService;
 import com.HealthTrack.services.imp.HealthMetricServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,27 +26,58 @@ public class HealthMetricServiceTest {
 
     @Mock
     private HealthMetricRepository healthMetricRepository;
-
     @Mock
     private UserRepository userRepository;
+
+
+    @Mock
+    private NotificationService notificationService;
 
     @InjectMocks
     private HealthMetricServiceImpl healthMetricService;
 
+
+
     @Test
-    public void testCreateHealthMetric() {
-        HealthMetricDto healthMetricDto = new HealthMetricDto(null, "Weight", 75.5, LocalDateTime.now(), 1L);
-        User user = new User(1L, "john_doe", "hashed_password", "john.doe@example.com", "123-456-7890", null, null, null, null);
-        HealthMetric healthMetric = HealthMetricMapper.mapToHealthMetric(healthMetricDto, user);
+    public void testCreateHealthMetric_CalculatesBMI_WhenWeightMetricProvided() {
+        // Arrange
+        Long userId = 1L;
+        HealthMetricDto weightDto = new HealthMetricDto(
+                null,
+                "Weight",
+                180.0,
+                LocalDateTime.now(),
+                userId
+        );
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(healthMetricRepository.save(any(HealthMetric.class))).thenReturn(healthMetric);
+        User user = new User(userId, "john_doe", "password", "john@example.com", "123-456-7890", null, null, null, null);
 
-        HealthMetricDto createdHealthMetric = healthMetricService.createHealthMetric(healthMetricDto);
+        HealthMetric weightMetric = HealthMetricMapper.mapToHealthMetric(weightDto, user);
+        weightMetric.setId(100L);
 
-        assertEquals("Weight", createdHealthMetric.getMetricType());
+        HealthMetric heightMetric = new HealthMetric();
+        heightMetric.setMetricType("Height");
+        heightMetric.setValue(70.0);
+        heightMetric.setTimestamp(LocalDateTime.now().minusDays(1));
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(healthMetricRepository.save(any(HealthMetric.class))).thenReturn(weightMetric);
+        when(healthMetricRepository.findTopByUserIdAndMetricTypeOrderByTimestampDesc(userId, "Height"))
+                .thenReturn(Optional.of(heightMetric));
+
+        // Act
+        HealthMetricDto result = healthMetricService.createHealthMetric(weightDto);
+
+        // Assert
+        assertEquals("Weight", result.getMetricType());
         verify(healthMetricRepository, times(1)).save(any(HealthMetric.class));
+        verify(notificationService, times(1)).sendAbnormalHealthMetricNotification(any(HealthMetric.class));
+        verify(healthMetricRepository, times(1)).findTopByUserIdAndMetricTypeOrderByTimestampDesc(userId, "Height");
     }
+
+
+
+
 
     @Test
     public void testGetHealthMetricById() {

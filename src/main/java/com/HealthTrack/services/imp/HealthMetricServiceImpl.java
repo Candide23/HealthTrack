@@ -5,7 +5,6 @@ import com.HealthTrack.mapper.HealthMetricMapper;
 import com.HealthTrack.models.HealthMetric;
 import com.HealthTrack.models.User;
 import com.HealthTrack.repositories.HealthMetricRepository;
-import com.HealthTrack.repositories.NotificationRepository;
 import com.HealthTrack.repositories.UserRepository;
 import com.HealthTrack.services.HealthMetricService;
 import com.HealthTrack.services.NotificationService;
