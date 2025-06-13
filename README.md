@@ -16,7 +16,6 @@ Built with enterprise-grade security and modern development practices, this appl
 ### 📊 **Intelligent Health Metrics**
 - Track weight, height, blood pressure, and other vital signs
 - **Automatic BMI calculation** when height and weight data are available
-- Historical data visualization and trends
 - Real-time metric validation and alerts
 
 ### 🩺 **Comprehensive Symptom Tracking**
@@ -100,8 +99,6 @@ MySQL (Production) / H2 (Development)
 ### Dashboard Overview
 *A clean, intuitive interface showing health metrics, recent symptoms, and upcoming appointments*
 
-### Health Metrics Tracking
-*Visual charts and graphs displaying health trends over time with automatic BMI calculations*
 
 ### Symptom Management
 *Comprehensive symptom logging with severity tracking and pattern analysis*
@@ -127,7 +124,7 @@ healthtrack/
 │   │   ├── pages/          # Main application pages
 │   │   ├── services/       # API service layer with Axios
 │   │   ├── utils/          # Helper functions and utilities
-│   │   └── styles/         # CSS modules and styling
+│   │   └── styles/         # bootstrap modules and styling
 │   └── public/             # Static assets
 
 ## License
